@@ -1,0 +1,30 @@
+.account {
+    display: flex;
+    justify-content: space-between;
+    min-width: 100px;
+    margin: 0;
+}
+
+.account__title {
+    font-family: 'Inter', 'Arial', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+    display: flex;
+    align-items: center;
+    color: #000000;
+    text-decoration: none;
+    gap: 13px;
+}
+
+.account__icon {
+    background-color: #F9F9F9;
+    border-radius: 6px;
+    background-image: url("../../images/navigation__account-icon.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+}

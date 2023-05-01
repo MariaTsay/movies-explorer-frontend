@@ -1,0 +1,36 @@
+.header {
+    display: flex;
+    position: relative;
+    width: 100%;
+    background: #F3C1F8;
+    padding: 0;
+    box-sizing: border-box;
+    min-height: 74px;
+}
+
+.header_loggined {
+    background: #FFFFFF;
+}
+
+.header__container {
+    display: flex;
+    justify-content: space-between;
+    min-width: 292px;
+    min-height: 38px;
+    margin: 15px auto 16px;
+}
+
+@media screen and (min-width: 768px) {
+    .header__container {
+        min-width: 708px;
+        margin: 15px auto;
+    }
+}
+
+@media screen and (min-width: 1280px) {
+
+    .header__container {
+        min-width: 1140px;
+        margin: 18px auto;
+    }
+}

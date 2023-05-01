@@ -1,0 +1,16 @@
+.welcome-title {
+    font-family: 'Inter', 'Arial', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 29px;
+    text-align: center;
+    color: #000000;
+    margin: 50px auto 0;
+}
+
+@media screen and (min-width: 768px) {
+    .welcome-title {
+        margin: 40px 0 0;
+    }
+}
