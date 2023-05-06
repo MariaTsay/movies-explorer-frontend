@@ -17,6 +17,10 @@
     margin: 80px auto 0;
 }
 
+.profile__wrap {
+    height: 62px;
+}
+
 .profile__user-info {
     display: flex;
     justify-content: space-between;

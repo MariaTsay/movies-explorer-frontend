@@ -13,7 +13,7 @@ import movie2 from "../../images/movie2.png";
 import movie3 from "../../images/movie3.png";
 
 function SavedMovies(props) {
-    const { nameRu, isLiked } = props;
+    const { isLiked } = props;
     const location = useLocation();
     const cardLikeButtonClassName = (`movies-card__like ${isLiked && 'movies-card__like_active'}`);
 
@@ -35,7 +35,7 @@ function SavedMovies(props) {
                                 <button className="movies-card__delete" type="button"></button>}
                         </div>
                         <label className="movies-card__duration">1ч 47м</label>
-                        <img className="movies-card__cover" src={movie1} alt={nameRu} />
+                        <img className="movies-card__cover" src={movie1} alt="обложка фильма" />
                     </MoviesCard>
                     <MoviesCard>
                         <div className="movies-card__wrap">
@@ -46,7 +46,7 @@ function SavedMovies(props) {
                                 <button className="movies-card__delete" type="button"></button>}
                         </div>
                         <label className="movies-card__duration">1ч 47м</label>
-                        <img className="movies-card__cover" src={movie2} alt={nameRu} />
+                        <img className="movies-card__cover" src={movie2} alt="обложка фильма" />
                     </MoviesCard>
                     <MoviesCard>
                         <div className="movies-card__wrap">
@@ -57,7 +57,7 @@ function SavedMovies(props) {
                                 <button className="movies-card__delete" type="button"></button>}
                         </div>
                         <label className="movies-card__duration">1ч 47м</label>
-                        <img className="movies-card__cover" src={movie3} alt={nameRu} />
+                        <img className="movies-card__cover" src={movie3} alt="обложка фильма" />
                     </MoviesCard>
                 </MoviesCardList>
             </main>

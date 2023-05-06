@@ -33,7 +33,7 @@ const Login = (props) => {
                 <div className="authorization__login-container">
                     <Input
                         label="E-mail"
-                        className="authorization__input"
+                        className="input__input"
                         type="email"
                         name="email"
                         id="email"
@@ -44,7 +44,7 @@ const Login = (props) => {
                     />
                     <Input
                         label="Пароль"
-                        className="authorization__input"
+                        className="input__input"
                         type="password"
                         name="password"
                         id="password"

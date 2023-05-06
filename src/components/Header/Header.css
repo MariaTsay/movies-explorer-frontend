@@ -20,6 +20,12 @@
     margin: 15px auto 16px;
 }
 
+@media screen and (min-width: 500px) {
+    .header__container {
+        min-width: 90%;
+    }
+}
+
 @media screen and (min-width: 768px) {
     .header__container {
         min-width: 708px;
@@ -27,10 +33,21 @@
     }
 }
 
-@media screen and (min-width: 1280px) {
+@media screen and (min-width: 1024px) {
+    .header__container {
+        min-width: 90%;
+    }
+}
 
+@media screen and (min-width: 1280px) {
     .header__container {
         min-width: 1140px;
         margin: 18px auto;
+    }
+}
+
+@media screen and (min-width: 1600px) {
+    .header__container {
+        min-width: 90%;
     }
 }

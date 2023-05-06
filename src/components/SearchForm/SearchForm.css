@@ -83,6 +83,12 @@
     margin-right: 13px;
 }
 
+@media screen and (min-width: 500px) {
+    .search__form {
+        max-width: 90%;
+    }
+}
+
 @media screen and (min-width: 768px) {
 
     .search__form {
@@ -110,6 +116,12 @@
     }
 }
 
+@media screen and (min-width: 1024px) {
+    .search__form {
+        max-width: 90%;
+    }
+}
+
 @media screen and (min-width: 1280px) {
     .search {
         padding-top: 80px;
@@ -133,5 +145,19 @@
         align-items: center;
         margin-bottom: 83px;
         min-width: 167px;
+    }
+}
+
+@media screen and (min-width: 1600px) {
+    .search__form {
+        max-width: 90%;
+    }
+
+    .search__input-conteiner {
+        max-width: 80%;
+    }
+
+    .search__checkbox-conteiner {
+        min-width: 20%;
     }
 }

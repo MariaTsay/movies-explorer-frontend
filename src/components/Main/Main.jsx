@@ -16,14 +16,14 @@ function Main() {
             <Header>
                 <NavigationAuth />
             </Header>
-            <main>
+            <div>
                 <Promo />
                 <NavTab />
                 <AboutProject />
                 <Techs />
                 <AboutMe />
                 <Portfolio />
-            </main>
+            </div>
             <Footer />
         </section>
     )

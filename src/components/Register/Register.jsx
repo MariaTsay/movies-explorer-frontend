@@ -28,14 +28,14 @@ const Register = (props) => {
 
     return (
         <section className="register">
-            <div className="authorization__welcome">
+            <div className="register__welcome">
                 <Logo />
                 <WelcomeMessage title="Добро пожаловать!" />
             </div>
             <AuthorizationForm onSubmit={handleSubmit}>
                 <Input
                     label="Имя"
-                    className="authorization__input"
+                    className="input__input"
                     type="name"
                     name="name"
                     id="name"
@@ -46,7 +46,7 @@ const Register = (props) => {
                 />
                 <Input
                     label="E-mail"
-                    className="authorization__input"
+                    className="ainput__input"
                     type="email"
                     name="email"
                     id="email"
@@ -57,7 +57,7 @@ const Register = (props) => {
                 />
                 <Input
                     label="Пароль"
-                    className="authorization__input"
+                    className="input__input"
                     type="password"
                     name="password"
                     id="password"
@@ -66,10 +66,11 @@ const Register = (props) => {
                     autoComplete="off"
                     errorText="Что-то пошло не так..."
                 />
-                <SubmitForm buttonText="Зарегистрироваться" />
-                <p className="submit-form__caption">Уже зарегистрированы?
-                    <Link to="/signin" className="submit-form__span">Войти</Link>
-                </p>
+                <SubmitForm buttonText="Зарегистрироваться">
+                    <p className="submit-form__caption">Уже зарегистрированы?
+                        <Link to="/signin" className="submit-form__span">Войти</Link>
+                    </p>
+                </SubmitForm>
             </AuthorizationForm>
             <InfoTooltip
                 isOpen={isInfoTooltipOpened}

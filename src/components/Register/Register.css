@@ -3,10 +3,26 @@
     padding-top: 56px;
 }
 
+.register__welcome {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 260px;
+    margin: 0 auto 80px;
+}
+
 @media screen and (min-width: 768px) {
     .register {
         padding-top: 232px;
     }
+
+    .register__welcome {
+        align-items: flex-start;
+        max-width: 396px;
+        margin: 70px auto 40px;
+    }
+
 }
 
 @media screen and (min-width: 1280px) {

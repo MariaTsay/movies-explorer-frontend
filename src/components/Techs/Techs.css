@@ -93,6 +93,12 @@
     }
 }
 
+@media screen and (min-width: 1024px) {
+    .techs__container {
+        max-width: 90%;
+    }
+}
+
 @media screen and (min-width: 1280px) {
     .techs {
         padding: 100px 0;
@@ -121,5 +127,11 @@
         line-height: 17px;
         width: 90px;
         height: 60px;
+    }
+}
+
+@media screen and (min-width: 1600px) {
+    .techs__container {
+        max-width: 90%;
     }
 }

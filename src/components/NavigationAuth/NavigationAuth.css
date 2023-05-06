@@ -6,6 +6,7 @@
     line-height: 16px;
     display: flex;
     align-items: center;
+    text-align: center;
     list-style: none;
     padding: 0;
 }
@@ -23,6 +24,8 @@
 }
 
 .navigation-auth__signin-btn {
+    display: flex;
+    align-items: center;
     justify-content: center;
     color: #FFFFFF;
     background: #000000;
@@ -32,6 +35,7 @@
     cursor: pointer;
     border: none;
     padding: 0;
+    text-decoration: none;
 }
 
 .navigation-auth__signin-btn:hover {

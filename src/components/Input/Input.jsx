@@ -6,10 +6,10 @@ const Input = (props) => {
 
     return (
         <section className="input">
-            <div className="authorization__input-wrap">
-                <label className="authorization__label">{label}</label>
+            <div className="input__wrap">
+                <label className="input__label">{label}</label>
                 <input
-                    className="authorization__input"
+                    className="input__input"
                     type={type}
                     name={name}
                     id={id}
@@ -19,7 +19,7 @@ const Input = (props) => {
                     autoComplete="off"
                 >
                 </input>
-                <span className="authorization__error">{errorText}</span>
+                <span className="input__error">{errorText}</span>
             </div>
         </section>
     )

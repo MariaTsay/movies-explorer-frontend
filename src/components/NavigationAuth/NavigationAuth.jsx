@@ -6,7 +6,7 @@ function NavigationAuth() {
     return (
         <nav className="navigation-auth">
             <Link to="/signup" className="navigation-auth__signup">Регистрация</Link>
-            <Link to="/signin"><button className="navigation-auth__signin-btn">Войти</button></Link>
+            <Link to="/signin" className="navigation-auth__signin-btn">Войти</Link>
         </nav>
     )
 }

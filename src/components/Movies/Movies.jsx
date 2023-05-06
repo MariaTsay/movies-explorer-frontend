@@ -22,7 +22,7 @@ import movie11 from "../../images/movie11.png";
 import movie12 from "../../images/movie12.png";
 
 function Movies(props) {
-    const { nameRu, isLiked } = props;
+    const { isLiked } = props;
     const location = useLocation();
     const [isLikedMovie, setIsLikedMovie] = useState(isLiked);
 
@@ -50,7 +50,7 @@ function Movies(props) {
                                 <button className="movies-card__delete" type="button"></button>}
                         </div>
                         <label className="movies-card__duration">1ч 47м</label>
-                        <img className="movies-card__cover" src={movie1} alt={nameRu} />
+                        <img className="movies-card__cover" src={movie1} alt="обложка фильма" />
                     </MoviesCard>
                     <MoviesCard>
                         <div className="movies-card__wrap">
@@ -65,7 +65,7 @@ function Movies(props) {
                                 <button className="movies-card__delete" type="button"></button>}
                         </div>
                         <label className="movies-card__duration">1ч 47м</label>
-                        <img className="movies-card__cover" src={movie2} alt={nameRu} />
+                        <img className="movies-card__cover" src={movie2} alt="обложка фильма" />
                     </MoviesCard>
                     <MoviesCard>
                         <div className="movies-card__wrap">
@@ -80,7 +80,7 @@ function Movies(props) {
                                 <button className="movies-card__delete" type="button"></button>}
                         </div>
                         <label className="movies-card__duration">1ч 47м</label>
-                        <img className="movies-card__cover" src={movie3} alt={nameRu} />
+                        <img className="movies-card__cover" src={movie3} alt="обложка фильма" />
                     </MoviesCard>
                     <MoviesCard>
                         <div className="movies-card__wrap">
@@ -95,7 +95,7 @@ function Movies(props) {
                                 <button className="movies-card__delete" type="button"></button>}
                         </div>
                         <label className="movies-card__duration">1ч 47м</label>
-                        <img className="movies-card__cover" src={movie4} alt={nameRu} />
+                        <img className="movies-card__cover" src={movie4} alt="обложка фильма" />
                     </MoviesCard>
                     <MoviesCard>
                         <div className="movies-card__wrap">
@@ -110,7 +110,7 @@ function Movies(props) {
                                 <button className="movies-card__delete" type="button"></button>}
                         </div>
                         <label className="movies-card__duration">1ч 47м</label>
-                        <img className="movies-card__cover" src={movie5} alt={nameRu} />
+                        <img className="movies-card__cover" src={movie5} alt="обложка фильма" />
                     </MoviesCard>
                     <MoviesCard>
                         <div className="movies-card__wrap">
@@ -125,7 +125,7 @@ function Movies(props) {
                                 <button className="movies-card__delete" type="button"></button>}
                         </div>
                         <label className="movies-card__duration">1ч 47м</label>
-                        <img className="movies-card__cover" src={movie6} alt={nameRu} />
+                        <img className="movies-card__cover" src={movie6} alt="обложка фильма" />
                     </MoviesCard>
                     <MoviesCard>
                         <div className="movies-card__wrap">
@@ -140,7 +140,7 @@ function Movies(props) {
                                 <button className="movies-card__delete" type="button"></button>}
                         </div>
                         <label className="movies-card__duration">1ч 47м</label>
-                        <img className="movies-card__cover" src={movie7} alt={nameRu} />
+                        <img className="movies-card__cover" src={movie7} alt="обложка фильма" />
                     </MoviesCard>
                     <MoviesCard>
                         <div className="movies-card__wrap">
@@ -155,7 +155,7 @@ function Movies(props) {
                                 <button className="movies-card__delete" type="button"></button>}
                         </div>
                         <label className="movies-card__duration">1ч 47м</label>
-                        <img className="movies-card__cover" src={movie8} alt={nameRu} />
+                        <img className="movies-card__cover" src={movie8} alt="обложка фильма" />
                     </MoviesCard>
                     <MoviesCard>
                         <div className="movies-card__wrap">
@@ -170,7 +170,7 @@ function Movies(props) {
                                 <button className="movies-card__delete" type="button"></button>}
                         </div>
                         <label className="movies-card__duration">1ч 47м</label>
-                        <img className="movies-card__cover" src={movie9} alt={nameRu} />
+                        <img className="movies-card__cover" src={movie9} alt="обложка фильма" />
                     </MoviesCard>
                     <MoviesCard>
                         <div className="movies-card__wrap">
@@ -185,7 +185,7 @@ function Movies(props) {
                                 <button className="movies-card__delete" type="button"></button>}
                         </div>
                         <label className="movies-card__duration">1ч 47м</label>
-                        <img className="movies-card__cover" src={movie10} alt={nameRu} />
+                        <img className="movies-card__cover" src={movie10} alt="обложка фильма" />
                     </MoviesCard>
                     <MoviesCard>
                         <div className="movies-card__wrap">
@@ -200,7 +200,7 @@ function Movies(props) {
                                 <button className="movies-card__delete" type="button"></button>}
                         </div>
                         <label className="movies-card__duration">1ч 47м</label>
-                        <img className="movies-card__cover" src={movie11} alt={nameRu} />
+                        <img className="movies-card__cover" src={movie11} alt="обложка фильма" />
                     </MoviesCard>
                     <MoviesCard>
                         <div className="movies-card__wrap">
@@ -215,7 +215,7 @@ function Movies(props) {
                                 <button className="movies-card__delete" type="button"></button>}
                         </div>
                         <label className="movies-card__duration">1ч 47м</label>
-                        <img className="movies-card__cover" src={movie12} alt={nameRu} />
+                        <img className="movies-card__cover" src={movie12} alt="обложка фильма" />
                     </MoviesCard>
                 </MoviesCardList>
                 <div className="movies__more-wrap">

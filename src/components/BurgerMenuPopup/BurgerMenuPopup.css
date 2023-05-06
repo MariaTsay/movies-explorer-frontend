@@ -13,6 +13,7 @@
 .burger-menu-popup_opened {
     visibility: visible;
     opacity: 1;
+    position: fixed;
 }
 
 .burger-menu-popup__container {

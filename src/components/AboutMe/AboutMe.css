@@ -125,6 +125,16 @@
 
 }
 
+@media screen and (min-width: 1024px) {
+    .about-me__container {
+        max-width: 90%;
+    }
+
+    .about-me__info {
+        width: 100%;
+    }
+}
+
 @media screen and (min-width: 1280px) {
     .about-me {
         padding: 110px 0 101px;
@@ -159,5 +169,15 @@
         font-size: 14px;
         line-height: 22px;
         margin-bottom: 99px;
+    }
+}
+
+@media screen and (min-width: 1600px) {
+    .about-me__container {
+        max-width: 90%;
+    }
+
+    .about-me__info {
+        width: 100%;
     }
 }
