@@ -16,7 +16,7 @@ const AboutMe = () => {
                         Я из Санкт-Петербурга, закончила факультет туризма в СПбГИЭУ. C 2022 года обучаюсь в Я.Практикуме на веб-разрабочика. После окончания обучения собираюсь работать в сфере IT и заниматься frontend разработкой, тк получаю удовольствие от создания красивых и удобных интерфейсов для пользователей.
                     </p>
                     <ul className="about-me__links">
-                        <li><a className="about-me__link" href="https://github.com/MariaTsay">Github</a></li>
+                        <li><a className="about-me__link" href="https://github.com/MariaTsay" target="_blank" rel="noreferrer">Github</a></li>
                     </ul>
                 </div>
             </div>

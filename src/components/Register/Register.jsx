@@ -36,7 +36,7 @@ const Register = (props) => {
                 <Input
                     label="Имя"
                     className="input__input"
-                    type="name"
+                    type="text"
                     name="name"
                     id="name"
                     value={name}

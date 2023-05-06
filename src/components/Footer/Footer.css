@@ -75,12 +75,6 @@
     text-align: center;
 }
 
-@media screen and (min-width: 500px) {
-    .footer__container {
-        max-width: 90%;
-    }
-}
-
 @media screen and (min-width: 768px) {
     .footer__container {
         max-width: 708px;
@@ -125,20 +119,8 @@
     }
 }
 
-@media screen and (min-width: 1024px) {
-    .footer__container {
-        max-width: 90%;
-    }
-}
-
 @media screen and (min-width: 1280px) {
     .footer__container {
         max-width: 1140px;
-    }
-}
-
-@media screen and (min-width: 1600px) {
-    .footer__container {
-        max-width: 90%;
     }
 }

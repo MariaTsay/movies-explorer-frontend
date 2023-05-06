@@ -40,7 +40,6 @@ const Login = (props) => {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         autoComplete="off"
-
                     />
                     <Input
                         label="Пароль"
@@ -64,7 +63,7 @@ const Login = (props) => {
                 isOpen={isInfoTooltipOpened}
                 onClose={isInfoTooltipClosed}
                 status={isInfoTooltipStatus}
-                text={isInfoTooltipStatus === 'success' ? 'Вы успешно зарегистрировались!' : 'Что-то пошло не так! Попробуйте ещё раз.'}
+                text={isInfoTooltipStatus === 'success' ? 'Добро пожаловать!' : 'Что-то пошло не так! Попробуйте ещё раз.'}
             />
         </section>
     )

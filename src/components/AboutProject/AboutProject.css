@@ -96,24 +96,6 @@
     margin: 0;
 }
 
-@media screen and (min-width: 500px) {
-    .about-project__container {
-        max-width: 90%;
-    }
-
-    .about-project__timeline {
-        max-width: 80%;
-    }
-
-    .about-project__timing-backend {
-        width: 100%;
-    }
-    
-    .about-project__timing-frontend {
-        width: 100%;
-    }
-}
-
 @media screen and (min-width: 768px) {
     .about-project {
         padding: 90px 0;
@@ -180,24 +162,6 @@
     }
 }
 
-@media screen and (min-width: 1024px) {
-    .about-project__container {
-        max-width: 90%;
-    }
-
-    .about-project__timeline {
-        max-width: 80%;
-    }
-
-    .about-project__timing-backend {
-        width: 100%;
-    }
-
-    .about-project__timing-frontend {
-        width: 100%;
-    }
-}
-
 @media screen and (min-width: 1280px) {
     .about-project {
         padding: 110px 0;
@@ -232,23 +196,5 @@
 
     .about-project__timing-frontend {
         width: 912px;
-    }
-}
-
-@media screen and (min-width: 1600px) {
-    .about-project__container {
-        max-width: 90%;
-    }
-
-    .about-project__timeline {
-        max-width: 80%;
-    }
-
-    .about-project__timing-backend {
-        width: 100%;
-    }
-
-    .about-project__timing-frontend {
-        width: 100%;
     }
 }

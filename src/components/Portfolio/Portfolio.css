@@ -80,35 +80,10 @@
     }
 }
 
-@media screen and (min-width: 1024px) {
-    .portfolio {
-        max-width: 90%;
-    }
-}
-
 @media screen and (min-width: 1280px) {
     .portfolio {
         max-width: 1140px;
         padding-bottom: 125px;
-    }
-
-    .portfolio__title {
-        margin: 0 0 50px;
-    }
-
-    .portfolio__name {
-        font-size: 30px;
-        line-height: 50px;
-    }
-
-    .portfolio__link {
-        font-size: 30px;
-    }
-}
-
-@media screen and (min-width: 1600px) {
-    .portfolio {
-        max-width: 90%;
     }
 
     .portfolio__title {

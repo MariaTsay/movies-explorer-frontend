@@ -7,7 +7,7 @@ const Input = (props) => {
     return (
         <section className="input">
             <div className="input__wrap">
-                <label className="input__label">{label}</label>
+                <label className="input__label" htmlFor={id}>{label}</label>
                 <input
                     className="input__input"
                     type={type}

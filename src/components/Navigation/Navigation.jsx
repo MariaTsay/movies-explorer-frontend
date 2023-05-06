@@ -1,19 +1,19 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import "./Navigation.css";
-import AccountIcon from '../AccountIcon/AccountIcon';
 
 function Navigation() {
+    const linkActiveClassName = (isActive) => {
+        return `navigation__link ${isActive ? 'navigation__link_active' : ''}`
+    }
+
     return (
-        <div>
-            <nav className="navigation">
-                <div className="navigation__links">
-                    <NavLink to="/movies" className="navigation__link">Фильмы</NavLink>
-                    <NavLink to="/saved-movies" className="navigation__link">Сохранённые фильмы</NavLink>
-                </div>
-                <AccountIcon />
-            </nav>
-        </div>
+        <nav className="navigation">
+            <div className="navigation__links">
+                <NavLink to="/movies" className={linkActiveClassName}>Фильмы</NavLink>
+                <NavLink to="/saved-movies" className={linkActiveClassName}>Сохранённые фильмы</NavLink>
+            </div>
+        </nav>
     )
 }
 

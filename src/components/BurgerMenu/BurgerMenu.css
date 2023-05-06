@@ -19,16 +19,11 @@
 @media screen and (min-width: 768px) {
     .burger-menu {
         max-width: 708px;
+        display: none;
     }
 
     .burger-menu__btn {
         width: 44px;
         height: 44px;
-    }
-}
-
-@media screen and (min-width: 1280px) {
-    .burger-menu {
-        display: none;
     }
 }

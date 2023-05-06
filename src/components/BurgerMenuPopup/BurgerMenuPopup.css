@@ -96,7 +96,7 @@
     margin-bottom: 0;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (max-width: 767px) {
     .burger-menu-popup__container {
         width: 68%;
     }
