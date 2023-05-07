@@ -5,7 +5,7 @@
     height: 20px;
 }
 
-.filter-checkbox__tumbler_on {
+.filter-checkbox__tumbler-on {
     background-image: url(../../images/smalltumbon.svg);
     width: 36px;
     height: 20px;
@@ -13,7 +13,7 @@
     object-fit: cover;
 }
 
-.filter-checkbox__tumbler_off {
+.filter-checkbox__tumbler-off {
     background-image: url(../../images/smalltumboff.svg);
     width: 36px;
     height: 20px;

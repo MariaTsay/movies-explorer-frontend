@@ -10,7 +10,7 @@ import PageNotFound from '../PageNotFound/PageNotFound';
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 
 function App() {
-  const [currentUser, setcurrentUser] = useState(null);
+  const [currentUser, setcurrentUser] = useState({});
 
   return (
     <CurrentUserContext.Provider value={currentUser}>

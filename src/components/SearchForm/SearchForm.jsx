@@ -25,7 +25,7 @@ const SearchForm = (props) => {
     };
 
     return (
-        <section className="search">
+        <div className="search">
             <div className="search__form">
                 <form className="search__input-conteiner" onSubmit={handleSubmit} >
                     <input className="search__input"
@@ -41,7 +41,7 @@ const SearchForm = (props) => {
                     <FilterCheckbox />
                 </div>
             </div>
-        </section>
+        </div>
     );
 
 }

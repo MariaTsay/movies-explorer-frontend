@@ -13,8 +13,8 @@ const FilterCheckbox = (props) => {
         <div className="filter-checkbox">
             <div className={
                 isFilterCheckboxOn 
-                ? "filter-checkbox__tumbler_on"
-                : "filter-checkbox__tumbler_off"
+                ? "filter-checkbox__tumbler-on"
+                : "filter-checkbox__tumbler-off"
             } onClick={handleFilterCheckbox}></div>
         </div>
     );

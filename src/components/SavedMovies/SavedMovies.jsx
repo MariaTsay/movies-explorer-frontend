@@ -18,7 +18,7 @@ function SavedMovies(props) {
     const cardLikeButtonClassName = (`movies-card__like ${isLiked && 'movies-card__like_active'}`);
 
     return (
-        <section className="movies saved-movies">
+        <>
             <Header>
                 <Navigation />
                 <BurgerMenu />
@@ -61,9 +61,9 @@ function SavedMovies(props) {
                     </MoviesCard>
                 </MoviesCardList>
             </main>
-            <div className="saved-movies__gap"></div>
+            <div className="saved-movies-gap"></div>
             <Footer />
-        </section>
+        </>
     )
 }
 
