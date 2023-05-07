@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { useLocation } from 'react-router-dom';
 import "./Movies.css";
 import Header from '../Header/Header';
-import Navigation from '../Navigation/Navigation';
-import BurgerMenu from '../BurgerMenu/BurgerMenu';
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import MoviesCard from '../MoviesCard/MoviesCard';
@@ -30,13 +28,9 @@ function Movies(props) {
         setIsLikedMovie(!isLikedMovie);
     }
 
-
     return (
-        <section className="movies">
-            <Header>
-                <Navigation />
-                <BurgerMenu />
-            </Header>
+        <>
+            <Header />
             <main>
                 <SearchForm />
                 <MoviesCardList>
@@ -218,12 +212,12 @@ function Movies(props) {
                         <img className="movies-card__cover" src={movie12} alt="обложка фильма" />
                     </MoviesCard>
                 </MoviesCardList>
-                <div className="movies__more-wrap">
-                    <button className="movies__more-btn" type="button">Еще</button>
+                <div className="movies-more-wrap">
+                    <button className="movies-more-btn" type="button">Еще</button>
                 </div>
             </main>
             <Footer />
-        </section>
+        </>
     )
 }
 

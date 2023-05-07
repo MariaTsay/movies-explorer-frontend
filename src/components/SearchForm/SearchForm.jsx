@@ -21,18 +21,18 @@ const SearchForm = (props) => {
             onSearchFormSubmit(searchKeywords);
             setErrorMsg('');
         }
-        
+
     };
 
     return (
         <section className="search">
             <div className="search__form">
                 <form className="search__input-conteiner" onSubmit={handleSubmit} >
-                    <input className="search__input" 
-                    placeholder="Фильм"
-                    onChange={handleChange}
-                    type="text"
-                    required
+                    <input className="search__input"
+                        placeholder="Фильм"
+                        onChange={handleChange}
+                        type="text"
+                        required
                     />
                     <button className="search__btn" type="submit">Найти</button>
                 </form>

@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import "./BurgerMenuPopup.css";
-import AccountIcon from '../AccountIcon/AccountIcon';
 
 const BurgerMenuPopup = (props) => {
     const { isOpen, onClose, } = props;
@@ -27,7 +26,9 @@ const BurgerMenuPopup = (props) => {
                         <NavLink to="/movies" className="burger-menu-popup__link">Фильмы</NavLink>
                         <NavLink to="/saved-movies" className="burger-menu-popup__link">Сохранённые фильмы</NavLink>
                     </nav>
-                    <AccountIcon />
+                    <NavLink to="/profile" className="burger-menu-popup__account-title">Аккаунт
+                        <div className="burger-menu-popup__account-icon"></div>
+                    </NavLink>
                 </div>
             </div>
         </section>

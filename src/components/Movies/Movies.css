@@ -1,11 +1,11 @@
-.movies__more-wrap {
+.movies-more-wrap {
     max-width: 300px;
     height: 36px;
     margin: auto;
     padding: 50px 0 80px;
 }
 
-.movies__more-btn {
+.movies-more-btn {
     font-family: 'Inter', 'Arial', sans-serif;
     font-style: normal;
     font-weight: 500;
@@ -20,37 +20,19 @@
     box-sizing: border-box;
 }
 
-.movies__more-btn:hover {
+.movies-more-btn:hover {
     cursor: pointer;
     opacity: 0.6;
 }
 
-@media screen and (min-width: 500px) {
-    .movies__more-wrap {
-        max-width: 70%;
-    }
-}
-
 @media screen and (min-width: 768px) {
-    .movies__more-wrap {
+    .movies-more-wrap {
         max-width: 708px;
     }
 }
 
-@media screen and (min-width: 1024px) {
-    .movies__more-wrap {
-        max-width: 90%;
-    }
-}
-
 @media screen and (min-width: 1280px) {
-    .movies__more-wrap {
+    .movies-more-wrap {
         max-width: 1140px;
-    }
-}
-
-@media screen and (min-width: 1600px) {
-    .movies__more-wrap {
-        max-width: 90%;
     }
 }

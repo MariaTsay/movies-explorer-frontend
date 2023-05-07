@@ -1,12 +1,15 @@
 .footer {
+    display: flex;
+    justify-content: center;
     width: 100%;
     background: #FFFFFF;
     padding: 79px 0 20px;
 }
 
 .footer__container {
-    max-width: 300px;
-    margin: auto;
+    max-width: 1140px;
+    width: 100%;
+    margin: 0 10px;
 }
 
 .footer__subtitle {
@@ -77,7 +80,7 @@
 
 @media screen and (min-width: 768px) {
     .footer__container {
-        max-width: 708px;
+        margin: 0 30px;
     }
 
     .footer__subtitle {
@@ -121,6 +124,6 @@
 
 @media screen and (min-width: 1280px) {
     .footer__container {
-        max-width: 1140px;
+        margin: 0 auto;
     }
 }

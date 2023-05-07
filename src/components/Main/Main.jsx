@@ -1,7 +1,6 @@
 import React from "react";
 import "./Main.css";
 import Header from '../Header/Header';
-import NavigationAuth from '../NavigationAuth/NavigationAuth';
 import Promo from '../Promo/Promo';
 import NavTab from '../NavTab/NavTab';
 import AboutProject from '../AboutProject/AboutProject';
@@ -13,9 +12,7 @@ import Footer from '../Footer/Footer';
 function Main() {
     return (
         < >
-            <Header>
-                <NavigationAuth />
-            </Header>
+            <Header />
             <main className="main">
                 <Promo />
                 <NavTab />

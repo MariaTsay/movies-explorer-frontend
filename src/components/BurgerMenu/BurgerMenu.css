@@ -16,7 +16,7 @@
     cursor: pointer;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 769px) {
     .burger-menu {
         max-width: 708px;
         display: none;
