@@ -1,0 +1,60 @@
+.navigation-auth {
+    font-family: 'Inter', 'Arial', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 10px;
+    line-height: 16px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    list-style: none;
+    padding: 0;
+}
+
+.navigation-auth__signup {
+    text-align: right;
+    margin-right: 14px;
+    text-decoration: none;
+    color: #000000;
+}
+
+.navigation-auth__signup:hover {
+    cursor: pointer;
+    opacity: 0.6;
+}
+
+.navigation-auth__signin-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    background: #000000;
+    border-radius: 3px;
+    width: 54px;
+    height: 26px;
+    cursor: pointer;
+    border: none;
+    padding: 0;
+    text-decoration: none;
+}
+
+.navigation-auth__signin-btn:hover {
+    cursor: pointer;
+    opacity: 0.6;
+}
+
+@media screen and (min-width: 768px) {
+    .navigation-auth {
+        font-size: 12px;
+        line-height: 16px;
+    }
+
+    .navigation-auth__signup {
+        margin-right: 30px;
+    }
+
+    .navigation-auth__signin-btn {
+        width: 76px;
+        height: 32px;
+    }
+}

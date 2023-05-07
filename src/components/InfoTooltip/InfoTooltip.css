@@ -1,0 +1,129 @@
+.popup {
+    visibility: hidden;
+    position: fixed;
+    display: flex;
+    background: rgb(0, 0, 0, 0.5);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: visibility 0s 0.3s, opacity 0.3s linear;
+    z-index: 12;
+}
+
+.popup_opened {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0s, opacity 0.3s linear;
+}
+
+.popup__container {
+    min-width: 282px;
+    box-sizing: border-box;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.popup__content {
+    position: relative;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.popup__close {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-image: url(../../images/popup__close-btn.svg);
+    background-repeat: no-repeat;
+    top: -32px;
+    right: 0;
+    cursor: pointer;
+    border: 0;
+    padding: 0;
+    background-color: transparent;
+    object-fit: cover;
+}
+
+.popup__close:hover {
+    opacity: 0.6;
+}
+
+.popup__form {
+    position: relative;
+    background: #FFFFFF;
+    border-radius: 10px;
+    color: #000;
+    width: 100%;
+    max-width: 282px;
+    padding: 25px 22px;
+    box-sizing: border-box;
+}
+
+.popup__infotool-image {
+    display: flex;
+    justify-content: center;
+    width: 120px;
+    height: 120px;
+    margin: 26px auto 0;
+
+}
+
+.popup__infotool-text {
+    font-family: 'Inter', "Arial", sans-serif;
+    font-style: normal;
+    font-weight: 900;
+    font-size: 20px;
+    line-height: 24px;
+    text-align: center;
+    color: #000000;
+    margin: 32px auto 23px auto;
+
+}
+
+@media screen and (min-width: 768px) {
+    .popup__container {
+        min-width: 433px;
+    }
+
+    .popup__content {
+        max-width: 700px;
+    }
+
+    .popup__close {
+        background-size: 32px 32px;
+        width: 32px;
+        height: 32px;
+        top: -40px;
+        right: -40px;
+    }
+
+    .popup__form {
+        padding: 30px 32px;
+        max-width: 400px;
+    }
+
+    .popup__infotool-text {
+        font-size: 24px;
+        line-height: 29px;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .popup__content {
+        max-width: 816px;
+    }
+
+    .popup__form {
+        padding: 34px 36px 37px 36px;
+        max-width: 430px;
+    }
+}
