@@ -88,9 +88,14 @@
     padding: 0;
 }
 
-.profile__link:hover {
+.profile__link:not(:disabled):hover {
     cursor: pointer;
     color: #FF4062;
+}
+
+.profile__link:disabled {
+    cursor: pointer;
+    color: grey;
 }
 
 @media screen and (min-width: 768px) {

@@ -28,10 +28,7 @@ export class MainApi {
                 authorization: `Bearer ${localStorage.getItem('jwt')}`,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                name: data.name,
-                about: data.about
-            })
+            body: JSON.stringify(data)
         })
         return this._handleResponse(res);
     }

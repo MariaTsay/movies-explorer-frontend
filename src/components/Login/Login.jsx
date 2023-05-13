@@ -27,7 +27,7 @@ const Login = (props) => {
         <section className="login">
             <div className="login__welcome">
                 <Logo />
-                <WelcomeMessage title="Рады видеть!" />
+                <WelcomeMessage>Рады видеть!</WelcomeMessage>
             </div>
             <AuthorizationForm onSubmit={handleSubmit}>
                 <div className="authorization__login-container">

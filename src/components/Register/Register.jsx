@@ -14,7 +14,7 @@ const Register = (props) => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
+    
     const handleSubmit = useCallback((e) => {
         e.preventDefault();
         const authForm = {
@@ -30,7 +30,7 @@ const Register = (props) => {
         <section className="register">
             <div className="register__welcome">
                 <Logo />
-                <WelcomeMessage title="Добро пожаловать!" />
+                <WelcomeMessage>Добро пожаловать!</WelcomeMessage>
             </div>
             <AuthorizationForm onSubmit={handleSubmit}>
                 <Input
@@ -42,7 +42,6 @@ const Register = (props) => {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     autoComplete="off"
-
                 />
                 <Input
                     label="E-mail"
@@ -53,7 +52,6 @@ const Register = (props) => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     autoComplete="off"
-
                 />
                 <Input
                     label="Пароль"

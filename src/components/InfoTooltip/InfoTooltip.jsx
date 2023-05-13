@@ -5,8 +5,8 @@ import iconFail from "../../images/icon__fail.svg";
 
 const InfoTooltip = (props) => {
   const { name, status, text, isOpen, onClose } = props;
-
   const icon = status === 'success' ? iconSuccess : iconFail;
+  
 
   useEffect(() => {
     if (!isOpen) return;
@@ -24,7 +24,7 @@ const InfoTooltip = (props) => {
     <section className={`popup popup_type_status ${isOpen ? 'popup_opened' : ''}`} >
       <div className="popup__container">
         <div className="popup__content">
-          <button className="popup__close" type="button" id={`${name}-close`} onClick={onClose} />
+          <button className="popup__close" type="button" onClick={onClose} />
           <form
             className="popup__form"
             name={name}

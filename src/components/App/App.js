@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Routes, Route } from 'react-router-dom';
+import React, { useEffect, useMemo, useState } from "react";
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
 import SavedMovies from '../SavedMovies/SavedMovies';
@@ -7,10 +7,111 @@ import Profile from '../Profile/Profile';
 import Login from '../Login/Login';
 import Register from '../Register/Register';
 import PageNotFound from '../PageNotFound/PageNotFound';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
+import { checkAuth, signIn, signUp } from "../../utils/auth";
+import { mainApi } from "../../utils/MainApi";
+import { moviesApi } from "../../utils/MoviesApi";
 
 function App() {
-  const [currentUser, setcurrentUser] = useState({});
+  const [currentUser, setCurrentUser] = useState({});
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isInfoTooltipOpened, setIsInfoTooltipOpened] = useState(false);
+  const [isInfoTooltipStatus, setIsInfoTooltipStatus] = useState('');
+  const [movies, setMovies] = useState([]);
+  const [isErrorPopupOpen, setIsErrorPopupOpen] = useState(false);
+
+
+  const navigate = useNavigate();
+
+  //управление формой регистрации
+  const handleSignUp = async (data) => {
+    try {
+      await signUp(data);
+      setIsInfoTooltipOpened(true);
+      setIsInfoTooltipStatus('success');
+      navigate("/movies");
+    } catch (err) {
+      console.log(err);
+      setIsInfoTooltipOpened(true);
+      setIsInfoTooltipStatus('fail');
+    }
+  }
+
+  //управление формой авторизации
+  const handleSignIn = async (data) => {
+    try {
+      const { token } = await signIn(data);
+      localStorage.setItem('jwt', token);
+      setIsLoggedIn(true);
+      navigate("/movies");
+    } catch (err) {
+      console.log(err);
+      setIsInfoTooltipOpened(true);
+      setIsInfoTooltipStatus('fail');
+    }
+  }
+
+  //проверка токена
+  useEffect(() => {
+    const jwt = localStorage.getItem('jwt');
+
+    if (jwt) {
+      checkAuth(jwt)
+        .then(() => {
+          setIsLoggedIn(true);
+          navigate("/movies");
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [navigate])
+
+  //выход пользователя со страницы
+  const handleSignOut = () => {
+    localStorage.removeItem('jwt');
+    setIsLoggedIn(false);
+    navigate("/");
+  }
+
+  //получение информации о пользователе с сервера
+  const getCurrentUserInfo = async () => {
+    try {
+      const currentUserInfo = await mainApi.getUserInfo();
+      setCurrentUser(currentUserInfo);
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  //редактирование информации о пользователе
+  const handleUpdateUserData = async (data) => {
+    try {
+      const updatedUserData = await mainApi.setUserInfo(data);
+      setCurrentUser(updatedUserData);
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const handleCloseErrorPopup = () => {
+    setIsErrorPopupOpen(false)
+  }
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      getCurrentUserInfo();
+    }
+  }, [isLoggedIn])
+
+  const closeInfoTooltip = () => {
+    setIsInfoTooltipOpened(false);
+    setIsInfoTooltipStatus('');
+    setIsErrorPopupOpen(false);
+  }
+
+
+
+
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -19,16 +120,39 @@ function App() {
           <Routes>
             <Route path="/" element={<Main />} />
             <Route path="/movies" element={
-              <Movies />
+              <ProtectedRoute isLoggedIn={isLoggedIn}>
+                <Movies
+                  movies={movies}
+                  isOpen={isErrorPopupOpen}
+                  onClose={handleCloseErrorPopup}
+                />
+              </ProtectedRoute>
             } />
             <Route path="/saved-movies" element={
-              <SavedMovies />
+              <ProtectedRoute isLoggedIn={isLoggedIn}>
+                <SavedMovies />
+              </ProtectedRoute>
             } />
             <Route path="/profile" element={
-              <Profile />
+              <ProtectedRoute isLoggedIn={isLoggedIn}>
+                <Profile
+                  onSignOut={handleSignOut}
+                />
+              </ProtectedRoute>
             } />
-            <Route path="/signup" element={<Register />} />
-            <Route path="/signin" element={<Login />} />
+            <Route path="/signup" element={
+              <Register
+                onSubmit={handleSignUp}
+                isInfoTooltipOpened={isInfoTooltipOpened}
+                isInfoTooltipClosed={closeInfoTooltip}
+                isInfoTooltipStatus={isInfoTooltipStatus}
+              />
+            } />
+            <Route path="/signin" element={
+              <Login
+                onSubmit={handleSignIn}
+              />
+            } />
             <Route path="*" element={<PageNotFound />} />
           </Routes>
         </div>

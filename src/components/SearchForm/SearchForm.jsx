@@ -1,44 +1,44 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
+import { useLocation } from 'react-router-dom';
 import "./SearchForm.css";
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
 
 const SearchForm = (props) => {
-    const { onSearchFormSubmit } = props;
-    const [errorMsg, setErrorMsg] = useState('');
-    const [searchKeywords, setSearchKeywords] = useState('');
+    const { onSearchFormSubmit, placeholder, isShortFilm, setIsShortFilm } = props;
+    const [search, setSearch] = useState('');
+    const [error, setError] = useState('');
+    const location = useLocation();
 
-    const handleChange = (e) => {
-        errorMsg('');
-        setSearchKeywords(e.target.value);
-    }
-
-    const handleSubmit = (e) => {
+    const handleSearchSubmit = useCallback((e) => {
         e.preventDefault();
 
-        if (searchKeywords === '') {
-            setErrorMsg('Нужно ввести ключевое слово');
+        if (search === '') {
+            setError('Нужно ввести ключевое слово');
         } else {
-            onSearchFormSubmit(searchKeywords);
-            setErrorMsg('');
+            onSearchFormSubmit(search);
+            setError('');
         }
 
-    };
+    }, [search, onSearchFormSubmit]);
 
     return (
         <div className="search">
             <div className="search__form">
-                <form className="search__input-conteiner" onSubmit={handleSubmit} >
+                <div className="search__wrap">
+                <form className="search__input-conteiner" onSubmit={handleSearchSubmit} >
                     <input className="search__input"
-                        placeholder="Фильм"
-                        onChange={handleChange}
+                        placeholder={placeholder}
+                        value={search}
+                        onChange={(e) => {setSearch(e.target.value)}}
                         type="text"
-                        required
                     />
                     <button className="search__btn" type="submit">Найти</button>
                 </form>
+                {!search && (<span className="search__error-text">{error}</span>)}
+                </div>
                 <div className="search__checkbox-conteiner">
                     <label className="search__label">Короткометражки</label>
-                    <FilterCheckbox />
+                    <FilterCheckbox value={isShortFilm} onChange={setIsShortFilm}/>
                 </div>
             </div>
         </div>

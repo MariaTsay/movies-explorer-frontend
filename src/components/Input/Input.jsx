@@ -17,6 +17,7 @@ const Input = (props) => {
                     value={value}
                     onChange={onChange}
                     autoComplete="off"
+                    required
                 >
                 </input>
                 <span className="input__error">{errorText}</span>

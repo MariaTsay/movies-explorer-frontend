@@ -23,6 +23,10 @@
     color: #000000;
     margin: 14px 0 9px 14px;
     box-sizing: border-box;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 280px;
 }
 
 .movies-card__like {
