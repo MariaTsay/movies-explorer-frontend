@@ -7,10 +7,12 @@ import AuthorizationForm from "../AuthorizationForm/AuthorizationForm";
 import Input from "../Input/Input";
 import SubmitForm from "../SubmitForm/SubmitForm";
 import InfoTooltip from "../InfoTooltip/InfoTooltip";
-
+import {useFormWithValidation} from "../validation/validation";
+import {regexEmail, regexName,} from "../../utils/constants";
 
 const Register = (props) => {
     const { onSubmit, isInfoTooltipOpened, isInfoTooltipClosed, isInfoTooltipStatus } = props;
+    const { values, handleChange, errors, isValid, resetForm } = useFormWithValidation();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -39,9 +41,11 @@ const Register = (props) => {
                     type="text"
                     name="name"
                     id="name"
-                    value={name}
+                    value={values["name"]}
                     onChange={(e) => setName(e.target.value)}
                     autoComplete="off"
+                    pattern={regexName}
+                    required
                 />
                 <Input
                     label="E-mail"
@@ -49,9 +53,11 @@ const Register = (props) => {
                     type="email"
                     name="email"
                     id="email"
-                    value={email}
+                    value={values["email"]}
                     onChange={(e) => setEmail(e.target.value)}
                     autoComplete="off"
+                    pattern={regexEmail}
+                    required
                 />
                 <Input
                     label="Пароль"
@@ -63,8 +69,9 @@ const Register = (props) => {
                     onChange={(e) => setPassword(e.target.value)}
                     autoComplete="off"
                     errorText="Что-то пошло не так..."
+                    required
                 />
-                <SubmitForm buttonText="Зарегистрироваться">
+                <SubmitForm buttonText="Зарегистрироваться" disabled={!isValid}>
                     <p className="submit-form__caption">Уже зарегистрированы?
                         <Link to="/signin" className="submit-form__span">Войти</Link>
                     </p>

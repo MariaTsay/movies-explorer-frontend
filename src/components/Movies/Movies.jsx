@@ -147,19 +147,19 @@ function Movies(props) {
                 }
 
                 <div className="movies-more-wrap">
-                    <button className="movies-more-btn" type="button">Еще</button>
+                {filteredMovies > moviesToRender && (
+                    <button 
+                    className="movies-more-btn" 
+                    type="button"
+                    onClick={handleMoreClick}
+                    >Еще</button>
+                )}
                 </div>
             </main>
             <Footer />
             <div className={`movies-popup-error ${isOpen ? 'movies-popup-error_opened' : ''}`}>
                 <div className="movies-popup-error__content">
-                    {filteredMovies > moviesToRender && (
-                        <button
-                            className="movies-popup-error__close"
-                            type="button"
-                            onClick={handleMoreClick}
-                        />
-                    )}
+                        <button className="movies-popup-error__close" type="button"  />
                     <form className="movies-popup-error__form">
                         <p className="movies-popup-error__text">Во время запроса произошла ошибка.<br />Возможно, проблема с соединением или сервер недоступен. <br />Подождите немного и попробуйте ещё раз</p>
                     </form>

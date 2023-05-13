@@ -18,8 +18,6 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [isInfoTooltipOpened, setIsInfoTooltipOpened] = useState(false);
   const [isInfoTooltipStatus, setIsInfoTooltipStatus] = useState('');
-  const [movies, setMovies] = useState([]);
-  const [isErrorPopupOpen, setIsErrorPopupOpen] = useState(false);
 
 
   const navigate = useNavigate();
@@ -93,10 +91,6 @@ function App() {
     }
   }
 
-  const handleCloseErrorPopup = () => {
-    setIsErrorPopupOpen(false)
-  }
-
   useEffect(() => {
     if (isLoggedIn) {
       getCurrentUserInfo();
@@ -106,7 +100,6 @@ function App() {
   const closeInfoTooltip = () => {
     setIsInfoTooltipOpened(false);
     setIsInfoTooltipStatus('');
-    setIsErrorPopupOpen(false);
   }
 
 
@@ -122,9 +115,6 @@ function App() {
             <Route path="/movies" element={
               <ProtectedRoute isLoggedIn={isLoggedIn}>
                 <Movies
-                  movies={movies}
-                  isOpen={isErrorPopupOpen}
-                  onClose={handleCloseErrorPopup}
                 />
               </ProtectedRoute>
             } />

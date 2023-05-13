@@ -8,6 +8,7 @@ function SubmitForm(props) {
             <button
                 className="submit-form__btn"
                 type="submit"
+                disabled
             >{buttonText}</button>
             <div className="submit-form__text-container">
                 {children}
