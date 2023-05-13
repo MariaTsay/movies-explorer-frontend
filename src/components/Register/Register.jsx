@@ -12,7 +12,7 @@ import {regexEmail, regexName,} from "../../utils/constants";
 
 const Register = (props) => {
     const { onSubmit, isInfoTooltipOpened, isInfoTooltipClosed, isInfoTooltipStatus } = props;
-    const { values, handleChange, errors, isValid, resetForm } = useFormWithValidation();
+    const { values, isValid } = useFormWithValidation();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -41,11 +41,13 @@ const Register = (props) => {
                     type="text"
                     name="name"
                     id="name"
-                    value={values["name"]}
-                    onChange={(e) => setName(e.target.value)}
+                    value={values.name || ''}
+                    handleChange={(e) => setName(e.target.value)}
                     autoComplete="off"
                     pattern={regexName}
                     required
+                    minLength="2"
+                    maxLength="30"
                 />
                 <Input
                     label="E-mail"
@@ -53,8 +55,8 @@ const Register = (props) => {
                     type="email"
                     name="email"
                     id="email"
-                    value={values["email"]}
-                    onChange={(e) => setEmail(e.target.value)}
+                    value={values.email || ''}
+                    handleChange={(e) => setEmail(e.target.value)}
                     autoComplete="off"
                     pattern={regexEmail}
                     required
@@ -65,10 +67,9 @@ const Register = (props) => {
                     type="password"
                     name="password"
                     id="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    value={values.password || ''}
+                    handleChange={(e) => setPassword(e.target.value)}
                     autoComplete="off"
-                    errorText="Что-то пошло не так..."
                     required
                 />
                 <SubmitForm buttonText="Зарегистрироваться" disabled={!isValid}>
