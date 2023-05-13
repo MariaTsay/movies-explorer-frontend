@@ -76,10 +76,11 @@ function Movies(props) {
 
         const filtered = movies.filter((movie) => {
             const nameRU = movie.nameRU.toLowerCase();
+            const nameEN = movie.nameEN.toLowerCase();
             if (isShortFilm && movie.duration > 40) {
                 return false;
             }
-            return nameRU.includes(search);
+            return nameRU.includes(search) || nameEN.includes(search);
         })
 
         localStorage.setItem("search", search);
