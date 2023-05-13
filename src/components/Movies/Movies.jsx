@@ -15,7 +15,6 @@ function Movies(props) {
         onMovieDelete,
         onSavedList,
         isLoading,
-        isOpen,
         onClose,
     } = props;
 
@@ -104,17 +103,21 @@ function Movies(props) {
         setPage((prev) => prev + 1);
     }, []);
 
+    const handleCloseErrorPopup = useCallback(() => {
+        setIsErrorPopupOpen(false)
+    },[])
+
     // хук закрытия попапа с ошибкой
     useEffect(() => {
-        if (!isOpen) return;
+        if (!isErrorPopupOpen) return;
 
         const handleEscBtn = (e) => {
             if (e.keyCode === 27)
-                onClose()
+            handleCloseErrorPopup()
         }
         document.addEventListener('keydown', handleEscBtn)
         return () => document.removeEventListener('keydown', handleEscBtn)
-    }, [isOpen, onClose]);
+    }, [isErrorPopupOpen, handleCloseErrorPopup]);
 
 
 
@@ -157,9 +160,9 @@ function Movies(props) {
                 </div>
             </main>
             <Footer />
-            <div className={`movies-popup-error ${isOpen ? 'movies-popup-error_opened' : ''}`}>
+            <div className={`movies-popup-error ${isErrorPopupOpen ? 'movies-popup-error_opened' : ''}`}>
                 <div className="movies-popup-error__content">
-                        <button className="movies-popup-error__close" type="button"  />
+                        <button className="movies-popup-error__close" type="button" onClick={handleCloseErrorPopup} />
                     <form className="movies-popup-error__form">
                         <p className="movies-popup-error__text">Во время запроса произошла ошибка.<br />Возможно, проблема с соединением или сервер недоступен. <br />Подождите немного и попробуйте ещё раз</p>
                     </form>
