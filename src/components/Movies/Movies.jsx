@@ -15,7 +15,6 @@ function Movies(props) {
         onMovieDelete,
         onSavedList,
         isLoading,
-        onClose,
     } = props;
 
     const [movies, setMovies] = useState([]);
@@ -103,6 +102,7 @@ function Movies(props) {
         setPage((prev) => prev + 1);
     }, []);
 
+    // управление закрылием попапа с ошибкой
     const handleCloseErrorPopup = useCallback(() => {
         setIsErrorPopupOpen(false)
     },[])
