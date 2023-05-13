@@ -61,6 +61,7 @@ function Movies(props) {
         }
     }, [isLoggedIn])
 
+    // хук изменения ширины экрана
     useEffect(() => {
         window.addEventListener('resize', handleResize);
 
