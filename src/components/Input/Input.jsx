@@ -1,10 +1,8 @@
 import React from "react";
 import "./Input.css";
-import {useFormWithValidation} from "../validation/validation";
 
 const Input = (props) => {
-    const { label, type, name, id, placeholder, pattern } = props;
-    const { values, handleChange, errors } = useFormWithValidation();
+    const { label, type, name, id, placeholder, value, onChange, error } = props;
 
     return (
         <section className="input">
@@ -16,12 +14,12 @@ const Input = (props) => {
                     name={name}
                     id={id}
                     placeholder={placeholder}
-                    value={values.name}
-                    onChange={handleChange}
+                    value={value}
+                    onChange={onChange}
                     autoComplete="off"
                 >
                 </input>
-                {errors.name && <span className="input__error">{errors.name}</span>}
+                {error && <span className="input__error">{error}</span>}
             </div>
         </section>
     )

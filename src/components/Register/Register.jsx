@@ -9,23 +9,20 @@ import SubmitForm from "../SubmitForm/SubmitForm";
 import {useFormWithValidation} from "../validation/validation";
 import {regexEmail, regexName,} from "../../utils/constants";
 
+
 const Register = (props) => {
     const { onSubmit} = props;
-    const { values, isValid } = useFormWithValidation();
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const { values, handleChange, errors, isValid, resetForm  } = useFormWithValidation();
     
     const handleSubmit = useCallback((e) => {
         e.preventDefault();
-        const authForm = {
-            name,
-            email,
-            password
-        }
 
-        onSubmit(authForm);
-    }, [name, email, password, onSubmit])
+        onSubmit({
+            name: values.name,
+            email: values.email,
+            password: values.password
+        });
+    }, [values, onSubmit])
 
     return (
         <section className="register">
@@ -41,12 +38,12 @@ const Register = (props) => {
                     name="name"
                     id="name"
                     value={values.name || ''}
-                    handleChange={(e) => setName(e.target.value)}
+                    onChange={handleChange}
                     autoComplete="off"
-                    pattern={regexName}
                     required
                     minLength="2"
                     maxLength="30"
+                    error={errors.name}
                 />
                 <Input
                     label="E-mail"
@@ -55,9 +52,9 @@ const Register = (props) => {
                     name="email"
                     id="email"
                     value={values.email || ''}
-                    handleChange={(e) => setEmail(e.target.value)}
+                    onChange={handleChange}
                     autoComplete="off"
-                    pattern={regexEmail}
+                    error={errors.email}
                     required
                 />
                 <Input
@@ -67,8 +64,9 @@ const Register = (props) => {
                     name="password"
                     id="password"
                     value={values.password || ''}
-                    handleChange={(e) => setPassword(e.target.value)}
+                    onChange={handleChange}
                     autoComplete="off"
+                    error={errors.password}
                     required
                 />
                 <SubmitForm buttonText="Зарегистрироваться" disabled={!isValid}>
