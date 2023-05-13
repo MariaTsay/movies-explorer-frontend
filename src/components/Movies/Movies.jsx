@@ -14,6 +14,8 @@ function Movies(props) {
         onMovieDislike,
         onMovieDelete,
         onSavedList,
+        isLoading,
+        error
     } = props;
 
     const [movies, setMovies] = useState([]);
@@ -22,7 +24,6 @@ function Movies(props) {
     const [search, setSearch] = useState('');
     const [page, setPage] = useState(1)
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
-    const [displayedMoviesState, setDisplayedMoviesState] = useState('');
 
     //управление шириной экрана
     const handleResize = useCallback(() => {
@@ -35,10 +36,8 @@ function Movies(props) {
             const apiMovies = await moviesApi.getMovies();
             console.log(apiMovies);
             setMovies(apiMovies);
-            setDisplayedMoviesState('moviesFound')
         } catch (err) {
             console.log(err);
-            setDisplayedMoviesState('serverError')
         }
     }, [])
 
@@ -101,6 +100,27 @@ function Movies(props) {
         setPage((prev) => prev + 1);
     }, []);
 
+    const MoviesBlock = () => {
+        if (search) {
+            if (!moviesToRender.length) {
+                return <h2 className="movies-error-title">ничего не найдено</h2>
+            }
+            return (
+                <MoviesCardList>
+                    {moviesToRender.map((movie) => (
+                        <MoviesCard
+                            key={movie.id}
+                            movie={movie}
+                            onMovieLike={onMovieLike}
+                            onMovieDislike={onMovieDislike}
+                            onMovieDelete={onMovieDelete}
+                            onSavedList={onSavedList}
+                        />
+                    ))}
+                </MoviesCardList>
+            )
+        }
+    }
 
     return (
         <>
@@ -113,35 +133,26 @@ function Movies(props) {
                     isShortFilm={isShortFilm}
                     onSearchFormSubmit={setSearch}
                 />
-                {displayedMoviesState === "isLoading"
+                {isLoading
                     ? <Preloader />
-                    : 
-                    <MoviesCardList>
-                        {moviesToRender.map((movie) => (
-                            <MoviesCard
-                                key={movie.id}
-                                movie={movie}
-                                onMovieLike={onMovieLike}
-                                onMovieDislike={onMovieDislike}
-                                onMovieDelete={onMovieDelete}
-                                onSavedList={onSavedList}
-                            />
-                        ))}
-                    </MoviesCardList>
-                }
+                    : (
+                        <>
+                            {error && <h2 className="movies-error-title">ошибка сервера</h2>}
+                            {<MoviesBlock />}
+                        </>
+                    )}
+
 
                 <div className="movies-more-wrap">
-                {filteredMovies > moviesToRender && (
-                    <button 
-                    className="movies-more-btn" 
-                    type="button"
-                    onClick={handleMoreClick}
-                    >Еще</button>
-                )}
+                    {filteredMovies > moviesToRender && (
+                        <button
+                            className="movies-more-btn"
+                            type="button"
+                            onClick={handleMoreClick}
+                        >Еще</button>
+                    )}
                 </div>
 
-                <h2>ошибка сервера</h2>
-                <h2>ничего не найдено</h2>
             </main>
             <Footer />
         </>

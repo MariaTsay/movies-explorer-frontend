@@ -25,81 +25,6 @@
     opacity: 0.6;
 }
 
-.movies-popup-error {
-    visibility: hidden;
-    position: fixed;
-    display: flex;
-    background: rgb(0, 0, 0, 0.5);
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    transition: visibility 0s 0.3s, opacity 0.3s linear;
-    z-index: 12;
-}
-
-.movies-popup-error_opened {
-    visibility: visible;
-    opacity: 1;
-    transition: visibility 0s, opacity 0.3s linear;
-}
-
-.movies-popup-error__content {
-    min-width: 282px;
-    box-sizing: border-box;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    justify-content: center;
-    align-items: center;
-    margin: 0 auto;
-}
-
-.movies-popup-error__close {
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    background-image: url(../../images/popup__close-btn.svg);
-    background-repeat: no-repeat;
-    top: -32px;
-    right: 0;
-    cursor: pointer;
-    border: 0;
-    padding: 0;
-    background-color: transparent;
-    object-fit: cover;
-}
-
-.movies-popup-error__close:hover {
-    opacity: 0.6;
-}
-
-.movies-popup-error__form {
-    position: relative;
-    background: #FFFFFF;
-    border-radius: 10px;
-    color: #000;
-    width: 100%;
-    max-width: 282px;
-    padding: 25px 22px;
-    box-sizing: border-box;
-}
-
-.movies-popup-error__text {
-    font-family: 'Inter', "Arial", sans-serif;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 20px;
-    line-height: 24px;
-    text-align: center;
-    color: #FF4062;
-    margin: 32px auto 23px auto;
-}
-
 @media screen and (min-width: 768px) {
     .movies-more-wrap {
         max-width: 708px;
@@ -112,37 +37,16 @@
     }
 }
 
-@media screen and (min-width: 768px) {
-    .movies-popup-error__content {
-        max-width: 700px;
-    }
-
-    .movies-popup-error__close {
-        background-size: 32px 32px;
-        width: 32px;
-        height: 32px;
-        top: -40px;
-        right: -40px;
-    }
-
-    .movies-popup-error__form {
-        padding: 30px 32px;
-        max-width: 400px;
-    }
-
-    .movies-popup-error__text {
-        font-size: 24px;
-        line-height: 29px;
-    }
-}
-
-@media screen and (min-width: 1024px) {
-    .movies-popup-error__content {
-        max-width: 816px;
-    }
-
-    .movies-popup-error__form {
-        padding: 34px 36px 37px 36px;
-        max-width: 430px;
-    }
+.movies-error-title {
+    font-family: 'Inter', 'Arial', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 50px;
+    line-height: 55px;
+    color: #000000;
+    width: 708px;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    margin: 0 auto;
 }
