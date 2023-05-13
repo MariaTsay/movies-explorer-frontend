@@ -4,8 +4,8 @@ import "./SearchForm.css";
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
 
 const SearchForm = (props) => {
-    const { onSearchFormSubmit, placeholder, isShortFilm, setIsShortFilm } = props;
-    const [search, setSearch] = useState('');
+    const { onSearchFormSubmit, placeholder, isShortFilm, setIsShortFilm, initialValue } = props;
+    const [search, setSearch] = useState(initialValue ?? '');
     const [error, setError] = useState('');
     const location = useLocation();
 

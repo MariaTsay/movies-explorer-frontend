@@ -3,21 +3,12 @@ import { useLocation } from 'react-router-dom';
 import "./MoviesCard.css";
 
 const MoviesCard = (props) => {
-    const { movie, onMovieLike, onMovieDislike, onMovieDelete } = props;
+    const { movie,isLiked, onMovieLike, onMovieDelete } = props;
     const moviesServerUrl = ' https://api.nomoreparties.co/';
     const location = useLocation();
-    const [isLiked, setIsLiked] = useState(false);
-    const [savedMoviesList, setSavedMoviesList] = useState([]);
-
-    const handleLike = () => {
-        setIsLiked(true);
-        setSavedMoviesList([movie.id, ...savedMoviesList])
+    
+    const handleLikeClick = () => {
         onMovieLike(movie);
-    }
-
-    const handleDislike = () => {
-        setIsLiked(false);
-        onMovieDislike(movie)
     }
 
     const handleDelete = () => {
@@ -35,12 +26,16 @@ const MoviesCard = (props) => {
                     <h3 className="movies-card__title">{movie.nameRU}</h3>
                     {location.pathname === '/movies' ?
                         <button
-                            className={`movies-card__like ${isLiked ? 'movies-card__like_active' : ''}`} type="button" onClick={isLiked ? handleLike : handleDislike}></button>
+                            className={`movies-card__like ${isLiked ? 'movies-card__like_active' : ''}`} 
+                            type="button" 
+                            onClick={handleLikeClick}
+                        ></button>
                         :
                         <button className="movies-card__delete" type="button" onClick={handleDelete}></button>}
                 </div>
                 <label className="movies-card__duration">{getMovieDuration(movie.duration)}</label>
-                <a href={movie.trailerLink} target="_blank" rel="noreferrer"><img className="movies-card__cover" src={location.pathname === '/movies' ? moviesServerUrl + movie.image.url : movie.image} alt={movie.nameRu} /></a>
+                <a href={movie.trailerLink} target="_blank" rel="noreferrer"><img className="movies-card__cover" 
+                src={location.pathname === '/movies' ? moviesServerUrl + movie.image.url : movie.image} alt={movie.nameRu} /></a>
             </li>
         </>
     );

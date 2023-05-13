@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "./FilterCheckbox.css";
 
 const FilterCheckbox = (props) => {

@@ -6,7 +6,7 @@ import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import { useFormWithValidation } from "../validation/validation"
 
 const Profile = (props) => {
-    const { onUpdateUserData, onSignOut } = props;
+    const { onUpdateUserData, onSignOut, onEdit } = props;
     const { values, handleChange, errors, isValid, resetForm } = useFormWithValidation();
     const currentUser = useContext(CurrentUserContext);
     const [isUpdatedUserData, setIsUpdatedUserData] = useState(false);
@@ -67,6 +67,7 @@ const Profile = (props) => {
                                 className="profile__link"
                                 type="button"
                                 disabled={!isUpdatedUserData || !isValid}
+                                onClick={onEdit}
                             >Редактировать</button>
                         </li>
                         <li className="profile__option">

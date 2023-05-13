@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect, useCallback } from "react";
+import React, { useMemo, useState, useEffect, useCallback, useContext } from "react";
 import "./Movies.css";
 import Header from '../Header/Header';
 import SearchForm from '../SearchForm/SearchForm';
@@ -7,23 +7,45 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Footer from '../Footer/Footer';
 import Preloader from '../Preloader/Preloader';
 import { moviesApi } from "../../utils/MoviesApi";
+import { mainApi } from "../../utils/MainApi";
+import { SERVER_ERROR_MSG, NOTHINGFOUND_ERROR_MSG } from "../../utils/constants";
 
 function Movies(props) {
     const {
-        onMovieLike,
-        onMovieDislike,
-        onMovieDelete,
-        onSavedList,
         isLoading,
-        error
+        error,
     } = props;
 
     const [movies, setMovies] = useState([]);
+    const [savedMoviesList, setSavedMoviesList] = useState([]);
+    const [isLiked, setIsLiked] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(true);
     const [isShortFilm, setIsShortFilm] = useState(false);
-    const [search, setSearch] = useState('');
+    const [search, setSearch] = useState(localStorage.getItem('search') ?? '');
     const [page, setPage] = useState(1)
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+    const handleAddMovieToSaved = async (data) => {
+        try {
+            const savedMovie = mainApi.saveMovie(data);
+            //console.log(savedMovie);
+            setIsLiked(true);
+            setSavedMoviesList([savedMovie, ...savedMoviesList]);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+
+    const handleDeleteMovie = async (movie) => {
+        try {
+            mainApi.deleteMovie(movie.id);
+            setIsLiked(false)
+            setSavedMoviesList((state) => state.filter((m) => m._id === movie._id ? '' : m._id))
+        } catch (err) {
+            console.log(err)
+        }
+    }
 
     //управление шириной экрана
     const handleResize = useCallback(() => {
@@ -46,12 +68,7 @@ function Movies(props) {
         if (isLoggedIn) {
             getMovies();
         }
-        const savedSearch = localStorage.getItem("search");
         const savedIsShort = localStorage.getItem("isShort");
-
-        if (savedSearch) {
-            setSearch(savedSearch);
-        }
 
         if (savedIsShort) {
             setIsShortFilm(savedIsShort === "true");
@@ -102,8 +119,9 @@ function Movies(props) {
 
     const MoviesBlock = () => {
         if (search) {
+            console.log(search)
             if (!moviesToRender.length) {
-                return <h2 className="movies-error-title">ничего не найдено</h2>
+                return <h2 className="movies-error-title">{NOTHINGFOUND_ERROR_MSG}</h2>
             }
             return (
                 <MoviesCardList>
@@ -111,10 +129,8 @@ function Movies(props) {
                         <MoviesCard
                             key={movie.id}
                             movie={movie}
-                            onMovieLike={onMovieLike}
-                            onMovieDislike={onMovieDislike}
-                            onMovieDelete={onMovieDelete}
-                            onSavedList={onSavedList}
+                            onMovieLike={handleAddMovieToSaved}
+                            onMovieDelete={handleDeleteMovie}
                         />
                     ))}
                 </MoviesCardList>
@@ -132,13 +148,14 @@ function Movies(props) {
                     setIsShortFilm={setIsShortFilm}
                     isShortFilm={isShortFilm}
                     onSearchFormSubmit={setSearch}
+                    initialValue={search}
                 />
                 {isLoading
                     ? <Preloader />
                     : (
                         <>
-                            {error && <h2 className="movies-error-title">ошибка сервера</h2>}
-                            {<MoviesBlock />}
+                            {error && <h2 className="movies-error-title">{SERVER_ERROR_MSG}</h2>}
+                            <MoviesBlock />
                         </>
                     )}
 

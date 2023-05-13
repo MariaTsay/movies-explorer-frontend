@@ -17,12 +17,11 @@ const Input = (props) => {
                     id={id}
                     placeholder={placeholder}
                     value={values.name}
-                    pattern={pattern}
                     onChange={handleChange}
                     autoComplete="off"
                 >
                 </input>
-                {errors.name && <span className="input__error">errors.name</span>}
+                {errors.name && <span className="input__error">{errors.name}</span>}
             </div>
         </section>
     )

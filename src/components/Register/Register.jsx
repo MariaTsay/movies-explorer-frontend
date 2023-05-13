@@ -6,12 +6,11 @@ import WelcomeMessage from "../WelcomeMessage/WelcomeMessage";
 import AuthorizationForm from "../AuthorizationForm/AuthorizationForm";
 import Input from "../Input/Input";
 import SubmitForm from "../SubmitForm/SubmitForm";
-import InfoTooltip from "../InfoTooltip/InfoTooltip";
 import {useFormWithValidation} from "../validation/validation";
 import {regexEmail, regexName,} from "../../utils/constants";
 
 const Register = (props) => {
-    const { onSubmit, isInfoTooltipOpened, isInfoTooltipClosed, isInfoTooltipStatus } = props;
+    const { onSubmit} = props;
     const { values, isValid } = useFormWithValidation();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -78,12 +77,6 @@ const Register = (props) => {
                     </p>
                 </SubmitForm>
             </AuthorizationForm>
-            <InfoTooltip
-                isOpen={isInfoTooltipOpened}
-                onClose={isInfoTooltipClosed}
-                status={isInfoTooltipStatus}
-                text={isInfoTooltipStatus === 'success' ? 'Вы успешно зарегистрировались!' : 'Что-то пошло не так! Попробуйте ещё раз.'}
-            />
         </section>
     )
 }

@@ -8,14 +8,14 @@ import Login from '../Login/Login';
 import Register from '../Register/Register';
 import PageNotFound from '../PageNotFound/PageNotFound';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import InfoTooltip from "../InfoTooltip/InfoTooltip";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import { checkAuth, signIn, signUp } from "../../utils/auth";
 import { mainApi } from "../../utils/MainApi";
-import { moviesApi } from "../../utils/MoviesApi";
 
 function App() {
   const [currentUser, setCurrentUser] = useState({});
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isInfoTooltipOpened, setIsInfoTooltipOpened] = useState(false);
   const [isInfoTooltipStatus, setIsInfoTooltipStatus] = useState('');
 
@@ -53,10 +53,12 @@ function App() {
   //проверка токена
   useEffect(() => {
     const jwt = localStorage.getItem('jwt');
+    //console.log(jwt);
 
     if (jwt) {
       checkAuth(jwt)
-        .then(() => {
+        .then((user) => {
+          setCurrentUser(user)
           setIsLoggedIn(true);
           navigate("/movies");
         })
@@ -103,9 +105,6 @@ function App() {
   }
 
 
-
-
-
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="App">
@@ -127,15 +126,13 @@ function App() {
               <ProtectedRoute isLoggedIn={isLoggedIn}>
                 <Profile
                   onSignOut={handleSignOut}
+                  onEdit={handleUpdateUserData}
                 />
               </ProtectedRoute>
             } />
             <Route path="/signup" element={
               <Register
                 onSubmit={handleSignUp}
-                isInfoTooltipOpened={isInfoTooltipOpened}
-                isInfoTooltipClosed={closeInfoTooltip}
-                isInfoTooltipStatus={isInfoTooltipStatus}
               />
             } />
             <Route path="/signin" element={
@@ -146,6 +143,12 @@ function App() {
             <Route path="*" element={<PageNotFound />} />
           </Routes>
         </div>
+        <InfoTooltip
+                isOpen={isInfoTooltipOpened}
+                onClose={closeInfoTooltip}
+                status={isInfoTooltipStatus}
+                text={isInfoTooltipStatus === 'success' ? 'Вы успешно зарегистрировались!' : 'Что-то пошло не так! Попробуйте ещё раз.'}
+            />
       </div>
     </CurrentUserContext.Provider>
   );

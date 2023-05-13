@@ -44,7 +44,7 @@ export class MainApi {
         return this._handleResponse(res);
     }
 
-    async createMovie(data) {
+    async saveMovie(data) {
         const res = await fetch(`${this._baseUrl}/movies`, {
             method: 'POST',
             headers: {
@@ -67,27 +67,7 @@ export class MainApi {
         return this._handleResponse(res);
     }
 
-    async likeMovie(id) {
-        const res = await fetch(`${this._baseUrl}/movies/${id}/likes`, {
-            method: 'PUT',
-            headers: {
-                authorization: `Bearer ${localStorage.getItem('jwt')}`,
-                'Content-Type': 'application/json'
-            }
-        })
-        return this._handleResponse(res);
-    }
 
-    async dislikeMovie(id) {
-        const res = await fetch(`${this._baseUrl}/movies/${id}/likes`, {
-            method: 'DELETE',
-            headers: {
-                authorization: `Bearer ${localStorage.getItem('jwt')}`,
-                'Content-Type': 'application/json'
-            }
-        })
-        return this._handleResponse(res);
-    }
 }
 
 //создание экземпляра класса MainApi
