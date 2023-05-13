@@ -72,24 +72,23 @@ function Movies(props) {
 
     // фильтр фильмов по ключевым словам и короткометражкам
     const filteredMovies = useMemo(() => {
-        if (!filterString) {
+        if (!search) {
             return [];
         }
 
         const filtered = movies.filter((movie) => {
-            const nameRU = movie.nameRu.toLowerCase();
-            const str = filterString.toLowerCase();
+            const nameRU = movie.nameRU.toLowerCase();
             if (isShortFilm && movie.duration > 40) {
                 return false;
             }
-            return nameRU.includes(str);
+            return nameRU.includes(search);
         })
 
-        localStorage.setItem("search", filterString);
+        localStorage.setItem("search", search);
         localStorage.setItem("isShort", String(isShortFilm));
 
         return filtered
-    }, [movies, isShortFilm, filterString]);
+    }, [movies, isShortFilm, search]);
 
     // отображение карточек с фильмами в зависимости от разрешения
     const moviesToRender = useMemo(() => {
