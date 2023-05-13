@@ -22,7 +22,6 @@ function Movies(props) {
     const [isErrorPopupOpen, setIsErrorPopupOpen] = useState(false);
     const [isShortFilm, setIsShortFilm] = useState(false);
     const [search, setSearch] = useState('');
-    const [filterString, setFilterString] = useState(null);
     const [page, setPage] = useState(1)
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 
@@ -53,7 +52,6 @@ function Movies(props) {
 
         if (savedSearch) {
             setSearch(savedSearch);
-            setFilterString(savedSearch);
         }
 
         if (savedIsShort) {
