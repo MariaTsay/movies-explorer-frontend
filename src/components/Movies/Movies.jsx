@@ -14,16 +14,15 @@ function Movies(props) {
         onMovieDislike,
         onMovieDelete,
         onSavedList,
-        isLoading,
     } = props;
 
     const [movies, setMovies] = useState([]);
     const [isLoggedIn, setIsLoggedIn] = useState(true);
-    const [isErrorPopupOpen, setIsErrorPopupOpen] = useState(false);
     const [isShortFilm, setIsShortFilm] = useState(false);
     const [search, setSearch] = useState('');
     const [page, setPage] = useState(1)
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+    const [displayedMoviesState, setDisplayedMoviesState] = useState('');
 
     //управление шириной экрана
     const handleResize = useCallback(() => {
@@ -36,9 +35,10 @@ function Movies(props) {
             const apiMovies = await moviesApi.getMovies();
             console.log(apiMovies);
             setMovies(apiMovies);
+            setDisplayedMoviesState('moviesFound')
         } catch (err) {
             console.log(err);
-            setIsErrorPopupOpen(true);
+            setDisplayedMoviesState('serverError')
         }
     }, [])
 
@@ -101,24 +101,6 @@ function Movies(props) {
         setPage((prev) => prev + 1);
     }, []);
 
-    // управление закрылием попапа с ошибкой
-    const handleCloseErrorPopup = useCallback(() => {
-        setIsErrorPopupOpen(false)
-    },[])
-
-    // хук закрытия попапа с ошибкой
-    useEffect(() => {
-        if (!isErrorPopupOpen) return;
-
-        const handleEscBtn = (e) => {
-            if (e.keyCode === 27)
-            handleCloseErrorPopup()
-        }
-        document.addEventListener('keydown', handleEscBtn)
-        return () => document.removeEventListener('keydown', handleEscBtn)
-    }, [isErrorPopupOpen, handleCloseErrorPopup]);
-
-
 
     return (
         <>
@@ -131,11 +113,11 @@ function Movies(props) {
                     isShortFilm={isShortFilm}
                     onSearchFormSubmit={setSearch}
                 />
-                {isLoading
+                {displayedMoviesState === "isLoading"
                     ? <Preloader />
-                    :
+                    : 
                     <MoviesCardList>
-                        {filteredMovies.map((movie) => (
+                        {moviesToRender.map((movie) => (
                             <MoviesCard
                                 key={movie.id}
                                 movie={movie}
@@ -157,16 +139,11 @@ function Movies(props) {
                     >Еще</button>
                 )}
                 </div>
+
+                <h2>ошибка сервера</h2>
+                <h2>ничего не найдено</h2>
             </main>
             <Footer />
-            <div className={`movies-popup-error ${isErrorPopupOpen ? 'movies-popup-error_opened' : ''}`}>
-                <div className="movies-popup-error__content">
-                        <button className="movies-popup-error__close" type="button" onClick={handleCloseErrorPopup} />
-                    <form className="movies-popup-error__form">
-                        <p className="movies-popup-error__text">Во время запроса произошла ошибка.<br />Возможно, проблема с соединением или сервер недоступен. <br />Подождите немного и попробуйте ещё раз</p>
-                    </form>
-                </div>
-            </div>
         </>
     )
 }
