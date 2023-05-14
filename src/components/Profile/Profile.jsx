@@ -28,7 +28,7 @@ const Profile = (props) => {
 
     useEffect(() => {
         resetForm({name: currentUser.name, email: currentUser.email}, {}, false)
-    })
+    }, [currentUser, resetForm])
 
     return (
         <div className="profile">
@@ -46,6 +46,7 @@ const Profile = (props) => {
                         id="name"
                         value={values.name || ''}
                         onChange={handleChange}
+                        error={errors.name}
                         ></input>
                     </div>
                     <div className="profile__user-info">
@@ -57,6 +58,7 @@ const Profile = (props) => {
                         id="email"
                         value={values.email || ''}
                         onChange={handleChange}
+                        error={errors.email}
                         ></input>
                     </div>
                 </div>

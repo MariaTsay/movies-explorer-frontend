@@ -19,11 +19,12 @@ function Movies(props) {
     const [movies, setMovies] = useState([]);
     const [savedMoviesList, setSavedMoviesList] = useState([]);
     const [isLiked, setIsLiked] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(true);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isShortFilm, setIsShortFilm] = useState(false);
     const [search, setSearch] = useState(localStorage.getItem('search') ?? '');
-    const [page, setPage] = useState(1)
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+    const [cardsToLoad, setCardsToLoad] = useState(0);
+   
 
     const handleAddMovieToSaved = async (data) => {
         try {
@@ -109,17 +110,22 @@ function Movies(props) {
     const moviesToRender = useMemo(() => {
         const countToRender = screenWidth < 768 ? 5 : screenWidth < 1280 ? 8 : 12;
 
-        return filteredMovies.slice(0, countToRender * page);
-    }, [filteredMovies, page, screenWidth]);
+        return filteredMovies.slice(0, countToRender + cardsToLoad);
+    }, [filteredMovies, cardsToLoad, screenWidth]);
 
     // управление кнопкой "Еще"
     const handleMoreClick = useCallback(() => {
-        setPage((prev) => prev + 1);
-    }, []);
+        if (screenWidth < 1280 ){
+            setCardsToLoad((prev) => prev + 2);
+        } else {
+            setCardsToLoad((prev) => prev + 3);
+        }
+        
+    }, [screenWidth]);
 
     const MoviesBlock = () => {
         if (search) {
-            console.log(search)
+            //console.log(search)
             if (!moviesToRender.length) {
                 return <h2 className="movies-error-title">{NOTHINGFOUND_ERROR_MSG}</h2>
             }

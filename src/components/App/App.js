@@ -19,16 +19,17 @@ function App() {
   const [isInfoTooltipOpened, setIsInfoTooltipOpened] = useState(false);
   const [isInfoTooltipStatus, setIsInfoTooltipStatus] = useState('');
 
-
   const navigate = useNavigate();
 
   //управление формой регистрации
   const handleSignUp = async (data) => {
     try {
       await signUp(data);
+      setIsLoggedIn(true);
+      setCurrentUser({});
       setIsInfoTooltipOpened(true);
       setIsInfoTooltipStatus('success');
-      handleSignIn();
+      navigate("/movies");
      
     } catch (err) {
       console.log(err);
@@ -53,6 +54,10 @@ function App() {
 
   //проверка токена
   useEffect(() => {
+    if (!isLoggedIn) {
+      return
+    }
+
     const jwt = localStorage.getItem('jwt');
 
     if (jwt) {
@@ -64,11 +69,12 @@ function App() {
         })
         .catch((err) => console.log(err));
     }
-  }, [navigate])
+  }, [isLoggedIn])
 
   //выход пользователя со страницы
   const handleSignOut = () => {
     localStorage.removeItem('jwt');
+    setCurrentUser(null)
     setIsLoggedIn(false);
     navigate("/");
   }

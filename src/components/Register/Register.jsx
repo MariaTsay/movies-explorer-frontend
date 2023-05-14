@@ -11,13 +11,17 @@ import {regexEmail, regexName,} from "../../utils/constants";
 
 
 const Register = (props) => {
-    const { name, email, password, onSubmit} = props;
+    const { onSubmit} = props;
     const { values, handleChange, errors, isValid  } = useFormWithValidation();
     
     const handleSubmit = useCallback((e) => {
         e.preventDefault();
 
-        onSubmit(values);
+        onSubmit({
+            name: values.name,
+            email: values.email,
+            password: values.password
+        });
     }, [values, onSubmit])
 
     return (
@@ -36,10 +40,10 @@ const Register = (props) => {
                     value={values.name || ''}
                     onChange={handleChange}
                     autoComplete="off"
-                    required
+                    pattern={regexName}
+                    error={errors.name}
                     minLength="2"
                     maxLength="30"
-                    error={errors.name}
                 />
                 <Input
                     label="E-mail"
@@ -50,8 +54,8 @@ const Register = (props) => {
                     value={values.email || ''}
                     onChange={handleChange}
                     autoComplete="off"
+                    pattern={regexEmail}
                     error={errors.email}
-                    required
                 />
                 <Input
                     label="Пароль"
@@ -63,9 +67,8 @@ const Register = (props) => {
                     onChange={handleChange}
                     autoComplete="off"
                     error={errors.password}
-                    required
                 />
-                <SubmitForm buttonText="Зарегистрироваться" disabled={!isValid}>
+                <SubmitForm buttonText="Зарегистрироваться" isValid={!isValid}>
                     <p className="submit-form__caption">Уже зарегистрированы?
                         <Link to="/signin" className="submit-form__span">Войти</Link>
                     </p>
