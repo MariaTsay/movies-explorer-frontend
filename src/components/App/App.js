@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
@@ -28,7 +28,8 @@ function App() {
       await signUp(data);
       setIsInfoTooltipOpened(true);
       setIsInfoTooltipStatus('success');
-      navigate("/movies");
+      handleSignIn();
+     
     } catch (err) {
       console.log(err);
       setIsInfoTooltipOpened(true);
@@ -53,7 +54,6 @@ function App() {
   //проверка токена
   useEffect(() => {
     const jwt = localStorage.getItem('jwt');
-    console.log(jwt);
 
     if (jwt) {
       checkAuth(jwt)
@@ -126,7 +126,7 @@ function App() {
               <ProtectedRoute isLoggedIn={isLoggedIn}>
                 <Profile
                   onSignOut={handleSignOut}
-                  onEdit={handleUpdateUserData}
+                  onUpdateUserData={handleUpdateUserData}
                 />
               </ProtectedRoute>
             } />

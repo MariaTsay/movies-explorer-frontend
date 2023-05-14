@@ -11,17 +11,13 @@ import {regexEmail, regexName,} from "../../utils/constants";
 
 
 const Register = (props) => {
-    const { onSubmit} = props;
-    const { values, handleChange, errors, isValid, resetForm  } = useFormWithValidation();
+    const { name, email, password, onSubmit} = props;
+    const { values, handleChange, errors, isValid  } = useFormWithValidation();
     
     const handleSubmit = useCallback((e) => {
         e.preventDefault();
 
-        onSubmit({
-            name: values.name,
-            email: values.email,
-            password: values.password
-        });
+        onSubmit(values);
     }, [values, onSubmit])
 
     return (
