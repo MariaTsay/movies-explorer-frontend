@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect, useCallback, useContext } from "react";
+import React, { useMemo, useState, useEffect, useCallback } from "react";
 import "./Movies.css";
 import Header from '../Header/Header';
 import SearchForm from '../SearchForm/SearchForm';
@@ -11,38 +11,36 @@ import { mainApi } from "../../utils/MainApi";
 import { SERVER_ERROR_MSG, NOTHINGFOUND_ERROR_MSG } from "../../utils/constants";
 
 function Movies(props) {
-    const {
-        isLoading,
-        error,
-    } = props;
-
+    const {isLoading, error} = props;
     const [movies, setMovies] = useState([]);
     const [savedMoviesList, setSavedMoviesList] = useState([]);
+    const [savedIdList, setSavedIdList] = useState([]);
     const [isLiked, setIsLiked] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isShortFilm, setIsShortFilm] = useState(false);
     const [search, setSearch] = useState(localStorage.getItem('search') ?? '');
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
     const [cardsToLoad, setCardsToLoad] = useState(0);
-   
 
-    const handleAddMovieToSaved = async (data) => {
+    const handleAddMovieToSaved = async (movie) => {
         try {
-            const savedMovie = mainApi.saveMovie(data);
-            //console.log(savedMovie);
-            setIsLiked(true);
-            setSavedMoviesList([savedMovie, ...savedMoviesList]);
+            if(!isLiked) {
+                const newMovie = await mainApi.saveMovie(movie);
+                console.log(newMovie);
+                setIsLiked(true);
+                setSavedMoviesList([newMovie, ...savedMoviesList]);
+            }
+   
         } catch (err) {
             console.log(err);
         }
     }
 
-
     const handleDeleteMovie = async (movie) => {
         try {
-            mainApi.deleteMovie(movie.id);
+            await mainApi.deleteMovie(movie._id);
+            //console.log(movie);
             setIsLiked(false)
-            setSavedMoviesList((state) => state.filter((m) => m._id === movie._id ? '' : m._id))
+            setSavedMoviesList((state) => state.filter((m) => console.log(m.movieId) === movie.id ? '' : m.movieId))
         } catch (err) {
             console.log(err)
         }
@@ -57,7 +55,7 @@ function Movies(props) {
     const getMovies = useCallback(async () => {
         try {
             const apiMovies = await moviesApi.getMovies();
-            console.log(apiMovies);
+            //console.log(apiMovies);
             setMovies(apiMovies);
         } catch (err) {
             console.log(err);
@@ -66,15 +64,14 @@ function Movies(props) {
 
     //хук сохранения фильмов
     useEffect(() => {
-        if (isLoggedIn) {
-            getMovies();
-        }
+        getMovies();
+  
         const savedIsShort = localStorage.getItem("isShort");
 
         if (savedIsShort) {
             setIsShortFilm(savedIsShort === "true");
         }
-    }, [isLoggedIn])
+    }, [])
 
     // хук изменения ширины экрана
     useEffect(() => {
@@ -110,8 +107,12 @@ function Movies(props) {
     const moviesToRender = useMemo(() => {
         const countToRender = screenWidth < 768 ? 5 : screenWidth < 1280 ? 8 : 12;
 
-        return filteredMovies.slice(0, countToRender + cardsToLoad);
-    }, [filteredMovies, cardsToLoad, screenWidth]);
+        return filteredMovies.slice(0, countToRender + cardsToLoad).map((movie) => ({...movie, 
+            isLiked: savedMoviesList.some((m) => m.movieId === movie.id)}));
+            
+    }, [filteredMovies, cardsToLoad, screenWidth, savedMoviesList]);
+
+    console.log(moviesToRender)
 
     // управление кнопкой "Еще"
     const handleMoreClick = useCallback(() => {
@@ -137,6 +138,7 @@ function Movies(props) {
                             movie={movie}
                             onMovieLike={handleAddMovieToSaved}
                             onMovieDelete={handleDeleteMovie}
+                            isLiked={isLiked}
                         />
                     ))}
                 </MoviesCardList>
@@ -165,7 +167,6 @@ function Movies(props) {
                         </>
                     )}
 
-
                 <div className="movies-more-wrap">
                     {filteredMovies > moviesToRender && (
                         <button
@@ -175,7 +176,6 @@ function Movies(props) {
                         >Еще</button>
                     )}
                 </div>
-
             </main>
             <Footer />
         </>

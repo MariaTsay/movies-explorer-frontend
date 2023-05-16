@@ -35,7 +35,7 @@ const Login = (props) => {
                         type="email"
                         name="email"
                         id="email"
-                        value={values.email}
+                        value={values.email || ''}
                         onChange={handleChange}
                         autoComplete="off"
                         error={errors.email}
@@ -46,7 +46,7 @@ const Login = (props) => {
                         type="password"
                         name="password"
                         id="password"
-                        value={values.password}
+                        value={values.password || ''}
                         onChange={handleChange}
                         autoComplete="off"
                         error={errors.password}

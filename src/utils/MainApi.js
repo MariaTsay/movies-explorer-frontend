@@ -51,7 +51,19 @@ export class MainApi {
                 authorization: `Bearer ${localStorage.getItem('jwt')}`,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify({
+                nameRU: data.nameRU || '',
+                nameEN: data.nameEN || '',
+                country: data.country || '',
+                director: data.director || '',
+                duration: data.duration || '',
+                year: data.year || '',
+                description: data.description || '',
+                image: `https://api.nomoreparties.co${data.image.url}` || '',
+                trailerLink: data.trailerLink || '',
+                thumbnail: `https://api.nomoreparties.co${data.image.formats.thumbnail.url}` || '',
+                movieId: data.id,
+            })
         })
         return this._handleResponse(res);
     }

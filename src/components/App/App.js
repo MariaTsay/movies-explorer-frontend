@@ -25,8 +25,6 @@ function App() {
   const handleSignUp = async (data) => {
     try {
       await signUp(data);
-      setIsLoggedIn(true);
-      setCurrentUser({});
       setIsInfoTooltipOpened(true);
       setIsInfoTooltipStatus('success');
       navigate("/movies");
@@ -54,10 +52,6 @@ function App() {
 
   //проверка токена
   useEffect(() => {
-    if (!isLoggedIn) {
-      return
-    }
-
     const jwt = localStorage.getItem('jwt');
 
     if (jwt) {
@@ -69,7 +63,7 @@ function App() {
         })
         .catch((err) => console.log(err));
     }
-  }, [isLoggedIn])
+  }, [])
 
   //выход пользователя со страницы
   const handleSignOut = () => {

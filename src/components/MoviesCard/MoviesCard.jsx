@@ -1,15 +1,18 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
 import { useLocation } from 'react-router-dom';
 import "./MoviesCard.css";
+import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 
 const MoviesCard = (props) => {
-    const { movie,isLiked, onMovieLike, onMovieDelete } = props;
-    const moviesServerUrl = ' https://api.nomoreparties.co/';
+    const { movie, movieId, isLiked, onMovieLike, onMovieDelete } = props;
+    const movieImageUrl = `https://api.nomoreparties.co${movie.image.url}`
     const location = useLocation();
-    
-    const handleLikeClick = () => {
-        onMovieLike(movie);
-    }
+    const currentUser = useContext(CurrentUserContext);
+
+    const handleLikeClick = useCallback(() => {
+        onMovieLike(movie);  
+        console.log(movie)
+    },[movie, onMovieLike])
 
     const handleDelete = () => {
         onMovieDelete(movie);
@@ -26,7 +29,7 @@ const MoviesCard = (props) => {
                     <h3 className="movies-card__title">{movie.nameRU}</h3>
                     {location.pathname === '/movies' ?
                         <button
-                            className={`movies-card__like ${isLiked ? 'movies-card__like_active' : ''}`} 
+                            className={`movies-card__like ${movie.isLiked ? 'movies-card__like_active' : ''}`} 
                             type="button" 
                             onClick={handleLikeClick}
                         ></button>
@@ -35,7 +38,7 @@ const MoviesCard = (props) => {
                 </div>
                 <label className="movies-card__duration">{getMovieDuration(movie.duration)}</label>
                 <a href={movie.trailerLink} target="_blank" rel="noreferrer"><img className="movies-card__cover" 
-                src={location.pathname === '/movies' ? moviesServerUrl + movie.image.url : movie.image} alt={movie.nameRu} /></a>
+                src={location.pathname === '/movies' && movieImageUrl} alt={movie.nameRu} /></a>
             </li>
         </>
     );
