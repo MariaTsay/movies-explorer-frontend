@@ -93,12 +93,14 @@ function App() {
     }
   }
 
+  //хук получения данных пользователя
   useEffect(() => {
     if (isLoggedIn) {
       getCurrentUserInfo();
     }
   }, [isLoggedIn])
 
+  //закрытие попапа infoTooltip
   const closeInfoTooltip = () => {
     setIsInfoTooltipOpened(false);
     setIsInfoTooltipStatus('');

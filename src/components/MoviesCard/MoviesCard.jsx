@@ -1,17 +1,15 @@
-import React, { useState, useEffect, useCallback, useContext } from "react";
+import React, { useCallback } from "react";
 import { useLocation } from 'react-router-dom';
 import "./MoviesCard.css";
-import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 
 const MoviesCard = (props) => {
-    const { movie, movieId, isLiked, onMovieLike, onMovieDelete } = props;
+    const { movie, onMovieLike, onMovieDelete } = props;
     const movieImageUrl = `https://api.nomoreparties.co${movie.image.url}`
     const location = useLocation();
-    const currentUser = useContext(CurrentUserContext);
 
     const handleLikeClick = useCallback(() => {
+        //console.log(movie);
         onMovieLike(movie);  
-        console.log(movie)
     },[movie, onMovieLike])
 
     const handleDelete = () => {

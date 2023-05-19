@@ -11,36 +11,37 @@ import { mainApi } from "../../utils/MainApi";
 import { SERVER_ERROR_MSG, NOTHINGFOUND_ERROR_MSG } from "../../utils/constants";
 
 function Movies(props) {
-    const {isLoading, error} = props;
+    const { isLoading, error } = props;
     const [movies, setMovies] = useState([]);
     const [savedMoviesList, setSavedMoviesList] = useState([]);
-    const [savedIdList, setSavedIdList] = useState([]);
-    const [isLiked, setIsLiked] = useState(false);
     const [isShortFilm, setIsShortFilm] = useState(false);
     const [search, setSearch] = useState(localStorage.getItem('search') ?? '');
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
     const [cardsToLoad, setCardsToLoad] = useState(0);
 
+    //добавление фильма в сохраненные, управление кнопкой лайка
     const handleAddMovieToSaved = async (movie) => {
         try {
-            if(!isLiked) {
+            if (!movie.isLiked) {
                 const newMovie = await mainApi.saveMovie(movie);
                 console.log(newMovie);
-                setIsLiked(true);
                 setSavedMoviesList([newMovie, ...savedMoviesList]);
+            } else {
+                await handleDeleteMovie(movie)
             }
-   
+
         } catch (err) {
             console.log(err);
         }
     }
 
+    //удаление фильма из сохраненных
     const handleDeleteMovie = async (movie) => {
         try {
-            await mainApi.deleteMovie(movie._id);
+            const movieRodelete = savedMoviesList.find((m) => m.movieId === movie.id)
+            await mainApi.deleteMovie(movieRodelete._id);
             //console.log(movie);
-            setIsLiked(false)
-            setSavedMoviesList((state) => state.filter((m) => console.log(m.movieId) === movie.id ? '' : m.movieId))
+            setSavedMoviesList((state) => state.filter((m) => m.movieId === movie.id ? '' : m.movieId))
         } catch (err) {
             console.log(err)
         }
@@ -65,7 +66,7 @@ function Movies(props) {
     //хук сохранения фильмов
     useEffect(() => {
         getMovies();
-  
+
         const savedIsShort = localStorage.getItem("isShort");
 
         if (savedIsShort) {
@@ -107,21 +108,25 @@ function Movies(props) {
     const moviesToRender = useMemo(() => {
         const countToRender = screenWidth < 768 ? 5 : screenWidth < 1280 ? 8 : 12;
 
-        return filteredMovies.slice(0, countToRender + cardsToLoad).map((movie) => ({...movie, 
-            isLiked: savedMoviesList.some((m) => m.movieId === movie.id)}));
-            
+        return filteredMovies
+        .slice(0, countToRender + cardsToLoad)
+        .map((movie) => ({
+            ...movie,
+            isLiked: savedMoviesList.some((m) => m.movieId === movie.id)
+        }));
+
     }, [filteredMovies, cardsToLoad, screenWidth, savedMoviesList]);
 
     console.log(moviesToRender)
 
     // управление кнопкой "Еще"
     const handleMoreClick = useCallback(() => {
-        if (screenWidth < 1280 ){
+        if (screenWidth < 1280) {
             setCardsToLoad((prev) => prev + 2);
         } else {
             setCardsToLoad((prev) => prev + 3);
         }
-        
+
     }, [screenWidth]);
 
     const MoviesBlock = () => {
@@ -138,7 +143,6 @@ function Movies(props) {
                             movie={movie}
                             onMovieLike={handleAddMovieToSaved}
                             onMovieDelete={handleDeleteMovie}
-                            isLiked={isLiked}
                         />
                     ))}
                 </MoviesCardList>
