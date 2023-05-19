@@ -24,7 +24,7 @@ function Movies(props) {
         try {
             if (!movie.isLiked) {
                 const newMovie = await mainApi.saveMovie(movie);
-                console.log(newMovie);
+                //console.log(newMovie);
                 setSavedMoviesList([newMovie, ...savedMoviesList]);
             } else {
                 await handleDeleteMovie(movie)

@@ -22,11 +22,14 @@ function App() {
   const navigate = useNavigate();
 
   //управление формой регистрации
-  const handleSignUp = async (data) => {
+  const handleSignUp = async ({name, email, password}) => {
     try {
-      await signUp(data);
+      await signUp({name, email, password});
+      const { token } = await signIn({email, password});
       setIsInfoTooltipOpened(true);
       setIsInfoTooltipStatus('success');
+      localStorage.setItem('jwt', token);
+      setIsLoggedIn(true);
       navigate("/movies");
      
     } catch (err) {
@@ -37,9 +40,9 @@ function App() {
   }
 
   //управление формой авторизации
-  const handleSignIn = async (data) => {
+  const handleSignIn = async ({email, password}) => {
     try {
-      const { token } = await signIn(data);
+      const { token } = await signIn({email, password});
       localStorage.setItem('jwt', token);
       setIsLoggedIn(true);
       navigate("/movies");
@@ -63,7 +66,7 @@ function App() {
         })
         .catch((err) => console.log(err));
     }
-  }, [])
+  }, [navigate])
 
   //выход пользователя со страницы
   const handleSignOut = () => {
@@ -84,16 +87,21 @@ function App() {
   }
 
   //редактирование информации о пользователе
-  const handleUpdateUserData = async (data) => {
+  const handleUpdateUserData = async ({ name, email }) => {
     try {
-      const updatedUserData = await mainApi.setUserInfo(data);
+      const updatedUserData = await mainApi.setUserInfo({ name, email });
+      console.log(updatedUserData);
       setCurrentUser(updatedUserData);
+      setIsInfoTooltipOpened(true);
+      setIsInfoTooltipStatus('success');
     } catch (err) {
       console.log(err)
+      setIsInfoTooltipOpened(true);
+      setIsInfoTooltipStatus('fail');
     }
   }
 
-  //хук получения данных пользователя
+  //хук получения данных пользователя при входе
   useEffect(() => {
     if (isLoggedIn) {
       getCurrentUserInfo();
@@ -149,7 +157,7 @@ function App() {
                 isOpen={isInfoTooltipOpened}
                 onClose={closeInfoTooltip}
                 status={isInfoTooltipStatus}
-                text={isInfoTooltipStatus === 'success' ? 'Вы успешно зарегистрировались!' : 'Что-то пошло не так! Попробуйте ещё раз.'}
+                text={isInfoTooltipStatus === 'success' ? 'Успешно!' : 'Что-то пошло не так! Попробуйте ещё раз.'}
             />
       </div>
     </CurrentUserContext.Provider>

@@ -4,6 +4,7 @@ import Header from "../Header/Header";
 import WelcomeMessage from "../WelcomeMessage/WelcomeMessage";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import { useFormWithValidation } from "../validation/validation"
+import { useCallback } from "react";
 
 const Profile = (props) => {
     const { onUpdateUserData, onSignOut } = props;
@@ -11,14 +12,14 @@ const Profile = (props) => {
     const currentUser = useContext(CurrentUserContext);
     const [isUpdatedUserData, setIsUpdatedUserData] = useState(false);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = useCallback((e) => {
         e.preventDefault();
 
         onUpdateUserData({
             name: values.name || currentUser.name,
             email: values.email || currentUser.email
         })
-    }
+    }, [values.name, currentUser.name, values.email, currentUser.email, onUpdateUserData ])
 
     useEffect(() => {
         values.name !== currentUser.name || values.email !== currentUser.email 
@@ -26,9 +27,7 @@ const Profile = (props) => {
         : setIsUpdatedUserData(false)
     }, [values.name, currentUser.name, values.email, currentUser.email])
 
-    useEffect(() => {
-        resetForm({name: currentUser.name, email: currentUser.email}, {}, false)
-    }, [currentUser, resetForm])
+   
 
     return (
         <div className="profile">
@@ -44,7 +43,7 @@ const Profile = (props) => {
                         type="text"
                         name="name"
                         id="name"
-                        value={values.name || ''}
+                        value={values.name || currentUser.name}
                         onChange={handleChange}
                         error={errors.name}
                         ></input>
@@ -56,7 +55,7 @@ const Profile = (props) => {
                         type="email"
                         name="email"
                         id="email"
-                        value={values.email || ''}
+                        value={values.email || currentUser.email}
                         onChange={handleChange}
                         error={errors.email}
                         ></input>
