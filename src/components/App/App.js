@@ -66,7 +66,7 @@ function App() {
         })
         .catch((err) => console.log(err));
     }
-  }, [navigate])
+  }, [])
 
   //выход пользователя со страницы
   const handleSignOut = () => {

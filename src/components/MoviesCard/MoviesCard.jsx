@@ -3,8 +3,13 @@ import { useLocation } from 'react-router-dom';
 import "./MoviesCard.css";
 
 const MoviesCard = (props) => {
-    const { movie, onMovieLike, onMovieDelete } = props;
-    const movieImageUrl = `https://api.nomoreparties.co${movie.image.url}`
+    const { movie, onMovieLike, onMovieDelete, isOnSavedList} = props;
+    
+    const movieImageUrl = isOnSavedList
+    ? movie.image
+    : `https://api.nomoreparties.co${movie.image.url}`
+    
+    
     const location = useLocation();
 
     const handleLikeClick = useCallback(() => {
@@ -36,7 +41,7 @@ const MoviesCard = (props) => {
                 </div>
                 <label className="movies-card__duration">{getMovieDuration(movie.duration)}</label>
                 <a href={movie.trailerLink} target="_blank" rel="noreferrer"><img className="movies-card__cover" 
-                src={location.pathname === '/movies' && movieImageUrl} alt={movie.nameRu} /></a>
+                src={movieImageUrl} alt={movie.nameRu} /></a>
             </li>
         </>
     );

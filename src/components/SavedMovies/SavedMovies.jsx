@@ -8,31 +8,23 @@ import MoviesCard from '../MoviesCard/MoviesCard';
 import Footer from '../Footer/Footer';
 import Preloader from '../Preloader/Preloader';
 import { SERVER_ERROR_MSG, NOTHINGFOUND_ERROR_MSG } from "../../utils/constants";
-import { moviesApi } from "../../utils/MoviesApi";
 import { mainApi } from "../../utils/MainApi";
 
 function SavedMovies(props) {
     const { isLoading, error } = props;
-    const location = useLocation();
     const [movies, setMovies] = useState([]);
     const [savedMoviesList, setSavedMoviesList] = useState([]);
-    const [isLiked, setIsLiked] = useState(false);
     const [isShortFilm, setIsShortFilm] = useState(false);
     const [search, setSearch] = useState(localStorage.getItem('search') ?? '');
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
     const [cardsToLoad, setCardsToLoad] = useState(0);
 
-    //управление шириной экрана
-    const handleResize = useCallback(() => {
-        setScreenWidth(window.innerWidth);
-    }, [])
-
-    //получение фильмов с сервера beatfilm-movies
-    const getMovies = useCallback(async () => {
+    //получение сохраненных фильмов с сервера
+    const getSavedMovies = useCallback(async () => {
         try {
-            const apiMovies = await moviesApi.getMovies();
-            console.log(apiMovies);
-            setMovies(apiMovies);
+            const apiSavedMovies = await mainApi.getSavedMovies();
+            console.log(apiSavedMovies);
+            setMovies(apiSavedMovies);
         } catch (err) {
             console.log(err);
         }
@@ -40,13 +32,30 @@ function SavedMovies(props) {
 
     //хук сохранения фильмов
     useEffect(() => {
-        getMovies();
+        getSavedMovies();
 
         const savedIsShort = localStorage.getItem("isShort");
 
         if (savedIsShort) {
             setIsShortFilm(savedIsShort === "true");
         }
+    }, [])
+
+    //удаление фильма из сохраненных
+    const handleDeleteMovie = async (movie) => {
+        try {
+            const movieToDelete = savedMoviesList.find((m) => m.movieId === movie.id)
+            await mainApi.deleteMovie(movieToDelete._id);
+            //console.log(movie);
+            setSavedMoviesList((state) => state.filter((m) => m.movieId === movie.id ? '' : m.movieId))
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    //управление шириной экрана
+    const handleResize = useCallback(() => {
+        setScreenWidth(window.innerWidth);
     }, [])
 
     // хук изменения ширины экрана
@@ -83,8 +92,14 @@ function SavedMovies(props) {
     const moviesToRender = useMemo(() => {
         const countToRender = screenWidth < 768 ? 5 : screenWidth < 1280 ? 8 : 12;
 
-        return filteredMovies.slice(0, countToRender + cardsToLoad);
-    }, [filteredMovies, cardsToLoad, screenWidth]);
+        return filteredMovies
+            .slice(0, countToRender + cardsToLoad)
+            .map((movie) => ({
+                ...movie,
+                isLiked: savedMoviesList.some((m) => m.movieId === movie.id)
+            }));
+
+    }, [filteredMovies, cardsToLoad, screenWidth, savedMoviesList]);
 
     // управление кнопкой "Еще"
     const handleMoreClick = useCallback(() => {
@@ -108,6 +123,7 @@ function SavedMovies(props) {
                         <MoviesCard
                             key={movie.id}
                             movie={movie}
+                            onMovieDelete={handleDeleteMovie}
                         />
                     ))}
                 </MoviesCardList>
@@ -121,6 +137,11 @@ function SavedMovies(props) {
             <main>
                 <SearchForm
                     placeholder="Фильм"
+                    onSubmit={filteredMovies}
+                    setIsShortFilm={setIsShortFilm}
+                    isShortFilm={isShortFilm}
+                    onSearchFormSubmit={setSearch}
+                    initialValue={search}
                 />
                 {isLoading
                     ? <Preloader />

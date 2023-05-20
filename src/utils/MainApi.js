@@ -37,7 +37,7 @@ export class MainApi {
     }
 
     async getSavedMovies() {
-        const res = await fetch(`${this._baseUrl}/saved-movies`, {
+        const res = await fetch(`${this._baseUrl}/movies`, {
             method: 'GET',
             headers: {
                 authorization: `Bearer ${localStorage.getItem('jwt')}`,

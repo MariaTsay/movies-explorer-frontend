@@ -38,8 +38,8 @@ function Movies(props) {
     //удаление фильма из сохраненных
     const handleDeleteMovie = async (movie) => {
         try {
-            const movieRodelete = savedMoviesList.find((m) => m.movieId === movie.id)
-            await mainApi.deleteMovie(movieRodelete._id);
+            const movieToDelete = savedMoviesList.find((m) => m.movieId === movie.id)
+            await mainApi.deleteMovie(movieToDelete._id);
             //console.log(movie);
             setSavedMoviesList((state) => state.filter((m) => m.movieId === movie.id ? '' : m.movieId))
         } catch (err) {

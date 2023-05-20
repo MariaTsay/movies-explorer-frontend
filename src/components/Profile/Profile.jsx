@@ -8,7 +8,7 @@ import { useCallback } from "react";
 
 const Profile = (props) => {
     const { onUpdateUserData, onSignOut } = props;
-    const { values, handleChange, errors, isValid, resetForm } = useFormWithValidation();
+    const { values, handleChange, errors, isValid } = useFormWithValidation();
     const currentUser = useContext(CurrentUserContext);
     const [isUpdatedUserData, setIsUpdatedUserData] = useState(false);
 
@@ -26,7 +26,6 @@ const Profile = (props) => {
         ? setIsUpdatedUserData(true) 
         : setIsUpdatedUserData(false)
     }, [values.name, currentUser.name, values.email, currentUser.email])
-
    
 
     return (
@@ -66,7 +65,7 @@ const Profile = (props) => {
                         <li className="profile__option">
                             <button
                                 className="profile__link"
-                                type="button"
+                                type="submit"
                                 disabled={!isUpdatedUserData || !isValid}
                             >Редактировать</button>
                         </li>

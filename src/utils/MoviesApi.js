@@ -18,7 +18,7 @@ export class MoviesApi {
     }
 }
 
-//создание экземпляра класса MainApi
+//создание экземпляра класса MoviesApi
 export const moviesApi = new MoviesApi({
     baseUrl: 'https://api.nomoreparties.co/beatfilm-movies'
 });
