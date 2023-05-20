@@ -2,7 +2,7 @@ import React from "react";
 import "./FilterCheckbox.css";
 
 const FilterCheckbox = (props) => {
-    const {value, onChange} = props;
+    const { value, onChange } = props;
 
     const handleFilterCheckbox = () => {
         onChange(!value);
@@ -11,9 +11,9 @@ const FilterCheckbox = (props) => {
     return (
         <div className="filter-checkbox">
             <div className={
-                value 
-                ? "filter-checkbox__tumbler-on"
-                : "filter-checkbox__tumbler-off"
+                value
+                    ? "filter-checkbox__tumbler-on"
+                    : "filter-checkbox__tumbler-off"
             } onClick={handleFilterCheckbox}></div>
         </div>
     );

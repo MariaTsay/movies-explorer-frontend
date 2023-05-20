@@ -28,7 +28,7 @@ function SavedMovies(props) {
         }
     }, [])
 
-    //хук сохранения фильмов
+    //хук загрузки фильмов на страницу
     useEffect(() => {
         getSavedMovies();
 

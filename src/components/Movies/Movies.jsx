@@ -63,9 +63,21 @@ function Movies(props) {
         }
     }, [])
 
-    //хук сохранения фильмов
+    //получение сохраненных фильмов с сервера
+    const getSavedMovies = useCallback(async () => {
+        try {
+            const apiSavedMovies = await mainApi.getSavedMovies();
+            console.log(apiSavedMovies.data);
+            setSavedMoviesList(apiSavedMovies.data);
+        } catch (err) {
+            console.log(err);
+        }
+    }, [])
+
+    //хук загрузки фильмов на страницу
     useEffect(() => {
         getMovies();
+        getSavedMovies();
 
         const savedIsShort = localStorage.getItem("isShort");
 
@@ -109,11 +121,11 @@ function Movies(props) {
         const countToRender = screenWidth < 768 ? 5 : screenWidth < 1280 ? 8 : 12;
 
         return filteredMovies
-        .slice(0, countToRender + cardsToLoad)
-        .map((movie) => ({
-            ...movie,
-            isLiked: savedMoviesList.some((m) => m.movieId === movie.id)
-        }));
+            .slice(0, countToRender + cardsToLoad)
+            .map((movie) => ({
+                ...movie,
+                isLiked: savedMoviesList.some((m) => m.movieId === movie.id)
+            }));
 
     }, [filteredMovies, cardsToLoad, screenWidth, savedMoviesList]);
 
@@ -167,8 +179,8 @@ function Movies(props) {
                     ? <Preloader />
                     : (
                         <>
-                            {error && <h2 className="movies-error-title">{SERVER_ERROR_MSG}</h2>}
                             <MoviesBlock />
+                            {error && <h2 className="movies-error-title">{SERVER_ERROR_MSG}</h2>}
                         </>
                     )}
 

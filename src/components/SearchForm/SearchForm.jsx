@@ -23,20 +23,20 @@ const SearchForm = (props) => {
         <div className="search">
             <div className="search__form">
                 <div className="search__wrap">
-                <form className="search__input-conteiner" onSubmit={handleSearchSubmit} >
-                    <input className="search__input"
-                        placeholder={placeholder}
-                        value={search}
-                        onChange={(e) => {setSearch(e.target.value)}}
-                        type="text"
-                    />
-                    <button className="search__btn" type="submit">Найти</button>
-                </form>
-                {!search && (<span className="search__error-text">{error}</span>)}
+                    <form className="search__input-conteiner" onSubmit={handleSearchSubmit} >
+                        <input className="search__input"
+                            placeholder={placeholder}
+                            value={search}
+                            onChange={(e) => { setSearch(e.target.value) }}
+                            type="text"
+                        />
+                        <button className="search__btn" type="submit">Найти</button>
+                    </form>
+                    {!search && (<span className="search__error-text">{error}</span>)}
                 </div>
                 <div className="search__checkbox-conteiner">
                     <label className="search__label">Короткометражки</label>
-                    <FilterCheckbox value={isShortFilm} onChange={setIsShortFilm}/>
+                    <FilterCheckbox value={isShortFilm} onChange={setIsShortFilm} />
                 </div>
             </div>
         </div>

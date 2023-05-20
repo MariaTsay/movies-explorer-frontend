@@ -6,7 +6,7 @@ import iconFail from "../../images/icon__fail.svg";
 const InfoTooltip = (props) => {
   const { name, status, text, isOpen, onClose } = props;
   const icon = status === 'success' ? iconSuccess : iconFail;
-  
+
 
   useEffect(() => {
     if (!isOpen) return;

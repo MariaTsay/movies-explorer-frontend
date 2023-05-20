@@ -6,14 +6,14 @@ import WelcomeMessage from "../WelcomeMessage/WelcomeMessage";
 import AuthorizationForm from "../AuthorizationForm/AuthorizationForm";
 import Input from "../Input/Input";
 import SubmitForm from "../SubmitForm/SubmitForm";
-import {useFormWithValidation} from "../validation/validation";
-import {regexEmail, regexName,} from "../../utils/constants";
+import { useFormWithValidation } from "../validation/validation";
+import { regexEmail, regexName, } from "../../utils/constants";
 
 
 const Register = (props) => {
-    const { onSubmit} = props;
-    const { values, handleChange, errors, isValid  } = useFormWithValidation();
-    
+    const { onSubmit } = props;
+    const { values, handleChange, errors, isValid } = useFormWithValidation();
+
     const handleSubmit = useCallback((e) => {
         e.preventDefault();
 

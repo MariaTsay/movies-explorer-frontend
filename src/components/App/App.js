@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
@@ -18,20 +18,21 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isInfoTooltipOpened, setIsInfoTooltipOpened] = useState(false);
   const [isInfoTooltipStatus, setIsInfoTooltipStatus] = useState('');
+  const [isAppInit, setIsAppInit] = useState(false);
 
   const navigate = useNavigate();
 
   //управление формой регистрации
-  const handleSignUp = async ({name, email, password}) => {
+  const handleSignUp = async ({ name, email, password }) => {
     try {
-      await signUp({name, email, password});
-      const { token } = await signIn({email, password});
+      await signUp({ name, email, password });
+      const { token } = await signIn({ email, password });
       setIsInfoTooltipOpened(true);
       setIsInfoTooltipStatus('success');
       localStorage.setItem('jwt', token);
       setIsLoggedIn(true);
       navigate("/movies");
-     
+
     } catch (err) {
       console.log(err);
       setIsInfoTooltipOpened(true);
@@ -40,9 +41,9 @@ function App() {
   }
 
   //управление формой авторизации
-  const handleSignIn = async ({email, password}) => {
+  const handleSignIn = async ({ email, password }) => {
     try {
-      const { token } = await signIn({email, password});
+      const { token } = await signIn({ email, password });
       localStorage.setItem('jwt', token);
       setIsLoggedIn(true);
       navigate("/movies");
@@ -62,9 +63,13 @@ function App() {
         .then((user) => {
           setCurrentUser(user)
           setIsLoggedIn(true);
-          navigate("/movies");
         })
-        .catch((err) => console.log(err));
+        .catch((err) => console.log(err))
+        .finally(() => {
+          setIsAppInit(true)
+        })
+    } else {
+      setIsAppInit(true)
     }
   }, [])
 
@@ -90,10 +95,11 @@ function App() {
   const handleUpdateUserData = async ({ name, email }) => {
     try {
       const updatedUserData = await mainApi.setUserInfo({ name, email });
-      console.log(updatedUserData);
-      setCurrentUser(updatedUserData);
+      //console.log(updatedUserData);
       setIsInfoTooltipOpened(true);
       setIsInfoTooltipStatus('success');
+      setCurrentUser(updatedUserData);
+
     } catch (err) {
       console.log(err)
       setIsInfoTooltipOpened(true);
@@ -114,6 +120,9 @@ function App() {
     setIsInfoTooltipStatus('');
   }
 
+  if (!isAppInit) {
+    return null
+  }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -153,11 +162,11 @@ function App() {
           </Routes>
         </div>
         <InfoTooltip
-                isOpen={isInfoTooltipOpened}
-                onClose={closeInfoTooltip}
-                status={isInfoTooltipStatus}
-                text={isInfoTooltipStatus === 'success' ? 'Успешно!' : 'Что-то пошло не так! Попробуйте ещё раз.'}
-            />
+          isOpen={isInfoTooltipOpened}
+          onClose={closeInfoTooltip}
+          status={isInfoTooltipStatus}
+          text={isInfoTooltipStatus === 'success' ? 'Успешно!' : 'Что-то пошло не так! Попробуйте ещё раз.'}
+        />
       </div>
     </CurrentUserContext.Provider>
   );
