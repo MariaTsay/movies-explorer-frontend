@@ -20,4 +20,5 @@ movies-explorer-frontend - это сервис для поиска и просм
 ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
 ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
 
-Ссылка на макет дипломного проекта: https://www.figma.com/file/roTYeyJxFBEWyD8scfwuvT/Diploma-(Copy)?node-id=932%3A3886&t=7psoUgUXNEHFIt68-1 
+Ссылка на [макет] дипломного проекта: (https://www.figma.com/file/roTYeyJxFBEWyD8scfwuvT/Diploma-(Copy)?node-id=932%3A3886&t=7psoUgUXNEHFIt68-1) 
+Ссылка на [pullrequest] (https://github.com/MariaTsay/movies-explorer-frontend/pull/2#issue-1718205786)
