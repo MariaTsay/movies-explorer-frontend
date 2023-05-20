@@ -118,6 +118,7 @@ function Movies(props) {
     }, [filteredMovies, cardsToLoad, screenWidth, savedMoviesList]);
 
     console.log(moviesToRender)
+    console.log(savedMoviesList)
 
     // управление кнопкой "Еще"
     const handleMoreClick = useCallback(() => {

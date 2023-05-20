@@ -9,6 +9,7 @@ const MoviesCard = (props) => {
     ? movie.image
     : `https://api.nomoreparties.co${movie.image.url}`
     
+    //console.log(movie.image)
     
     const location = useLocation();
 

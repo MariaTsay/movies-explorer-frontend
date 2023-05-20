@@ -1,5 +1,4 @@
 import React, { useMemo, useState, useEffect, useCallback } from "react";
-import { useLocation } from 'react-router-dom';
 import "./SavedMovies.css";
 import Header from '../Header/Header';
 import SearchForm from '../SearchForm/SearchForm';
@@ -12,7 +11,6 @@ import { mainApi } from "../../utils/MainApi";
 
 function SavedMovies(props) {
     const { isLoading, error } = props;
-    const [movies, setMovies] = useState([]);
     const [savedMoviesList, setSavedMoviesList] = useState([]);
     const [isShortFilm, setIsShortFilm] = useState(false);
     const [search, setSearch] = useState(localStorage.getItem('search') ?? '');
@@ -23,8 +21,8 @@ function SavedMovies(props) {
     const getSavedMovies = useCallback(async () => {
         try {
             const apiSavedMovies = await mainApi.getSavedMovies();
-            console.log(apiSavedMovies);
-            setMovies(apiSavedMovies);
+            console.log(apiSavedMovies.data);
+            setSavedMoviesList(apiSavedMovies.data);
         } catch (err) {
             console.log(err);
         }
@@ -44,10 +42,9 @@ function SavedMovies(props) {
     //удаление фильма из сохраненных
     const handleDeleteMovie = async (movie) => {
         try {
-            const movieToDelete = savedMoviesList.find((m) => m.movieId === movie.id)
-            await mainApi.deleteMovie(movieToDelete._id);
-            //console.log(movie);
-            setSavedMoviesList((state) => state.filter((m) => m.movieId === movie.id ? '' : m.movieId))
+            await mainApi.deleteMovie(movie._id);
+            //console.log(movie._id);
+            setSavedMoviesList((state) => state.filter((m) => m._id === movie._id ? '' : m._id))
         } catch (err) {
             console.log(err)
         }
@@ -73,7 +70,7 @@ function SavedMovies(props) {
             return [];
         }
 
-        const filtered = movies.filter((movie) => {
+        const filtered = savedMoviesList.filter((movie) => {
             const nameRU = movie.nameRU.toLowerCase();
             const nameEN = movie.nameEN.toLowerCase();
             if (isShortFilm && movie.duration > 40) {
@@ -86,7 +83,7 @@ function SavedMovies(props) {
         localStorage.setItem("isShort", String(isShortFilm));
 
         return filtered
-    }, [movies, isShortFilm, search]);
+    }, [savedMoviesList, isShortFilm, search]);
 
     // отображение карточек с фильмами в зависимости от разрешения
     const moviesToRender = useMemo(() => {
@@ -100,6 +97,8 @@ function SavedMovies(props) {
             }));
 
     }, [filteredMovies, cardsToLoad, screenWidth, savedMoviesList]);
+
+    console.log(moviesToRender)
 
     // управление кнопкой "Еще"
     const handleMoreClick = useCallback(() => {
@@ -121,9 +120,10 @@ function SavedMovies(props) {
                 <MoviesCardList>
                     {moviesToRender.map((movie) => (
                         <MoviesCard
-                            key={movie.id}
+                            key={movie._id}
                             movie={movie}
                             onMovieDelete={handleDeleteMovie}
+                            isOnSavedList={`https://api.nomoreparties.co${movie.image.url}`}
                         />
                     ))}
                 </MoviesCardList>

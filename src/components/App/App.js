@@ -123,8 +123,7 @@ function App() {
             <Route path="/" element={<Main />} />
             <Route path="/movies" element={
               <ProtectedRoute isLoggedIn={isLoggedIn}>
-                <Movies
-                />
+                <Movies />
               </ProtectedRoute>
             } />
             <Route path="/saved-movies" element={
