@@ -22,3 +22,5 @@ movies-explorer-frontend - это сервис для поиска и просм
 
 * Ссылка на [макет дипломного проекта](https://www.figma.com/file/roTYeyJxFBEWyD8scfwuvT/Diploma-(Copy)?node-id=932%3A3886&t=7psoUgUXNEHFIt68-1)
 * Ссылка на [pull request](https://github.com/MariaTsay/movies-explorer-frontend/pull/2#issue-1718205786)
+* Ссылка на [frontend](https://my-movies-explorer.nomoredomains.monster/)
+* Ссылка на [backend](https://api.my-movies-explorer.nomoredomains.monster)
