@@ -13,7 +13,7 @@ function SavedMovies(props) {
     const { isLoading, error } = props;
     const [savedMoviesList, setSavedMoviesList] = useState([]);
     const [isShortFilm, setIsShortFilm] = useState(false);
-    const [search, setSearch] = useState(localStorage.getItem('search') ?? '');
+    const [searchSavedMovies, setSearcSavedMoviesh] = useState(localStorage.getItem('searchSavedMovies') ?? '');
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
     const [cardsToLoad, setCardsToLoad] = useState(0);
 
@@ -23,6 +23,7 @@ function SavedMovies(props) {
             const apiSavedMovies = await mainApi.getSavedMovies();
             console.log(apiSavedMovies.data);
             setSavedMoviesList(apiSavedMovies.data);
+            localStorage.setItem("allSavedMovies", JSON.stringify(apiSavedMovies.data));
         } catch (err) {
             console.log(err);
         }
@@ -31,12 +32,7 @@ function SavedMovies(props) {
     //хук загрузки фильмов на страницу
     useEffect(() => {
         getSavedMovies();
-
-        const savedIsShort = localStorage.getItem("isShort");
-
-        if (savedIsShort) {
-            setIsShortFilm(savedIsShort === "true");
-        }
+        localStorage.getItem("allSavedMovies", savedMoviesList);
     }, [])
 
     //удаление фильма из сохраненных
@@ -66,9 +62,6 @@ function SavedMovies(props) {
 
     // фильтр фильмов по ключевым словам и короткометражкам
     const filteredMovies = useMemo(() => {
-        if (!search) {
-            return [];
-        }
 
         const filtered = savedMoviesList.filter((movie) => {
             const nameRU = movie.nameRU.toLowerCase();
@@ -76,14 +69,14 @@ function SavedMovies(props) {
             if (isShortFilm && movie.duration > 40) {
                 return false;
             }
-            return nameRU.includes(search) || nameEN.includes(search);
+            return nameRU.includes(searchSavedMovies) || nameEN.includes(searchSavedMovies);
         })
 
-        localStorage.setItem("search", search);
+        localStorage.setItem("searchSavedMovies", searchSavedMovies);
         localStorage.setItem("isShort", String(isShortFilm));
 
         return filtered
-    }, [savedMoviesList, isShortFilm, search]);
+    }, [savedMoviesList, isShortFilm, searchSavedMovies]);
 
     // отображение карточек с фильмами в зависимости от разрешения
     const moviesToRender = useMemo(() => {
@@ -98,7 +91,7 @@ function SavedMovies(props) {
 
     }, [filteredMovies, cardsToLoad, screenWidth, savedMoviesList]);
 
-    console.log(moviesToRender)
+    //console.log(moviesToRender)
 
     // управление кнопкой "Еще"
     const handleMoreClick = useCallback(() => {
@@ -111,24 +104,21 @@ function SavedMovies(props) {
     }, [screenWidth]);
 
     const MoviesBlock = () => {
-        if (search) {
-            //console.log(search)
-            if (!moviesToRender.length) {
-                return <h2 className="movies-error-title">{NOTHINGFOUND_ERROR_MSG}</h2>
-            }
-            return (
-                <MoviesCardList>
-                    {moviesToRender.map((movie) => (
-                        <MoviesCard
-                            key={movie._id}
-                            movie={movie}
-                            onMovieDelete={handleDeleteMovie}
-                            isOnSavedList={`https://api.nomoreparties.co${movie.image.url}`}
-                        />
-                    ))}
-                </MoviesCardList>
-            )
+        if (!moviesToRender.length) {
+            return <h2 className="movies-error-title">{NOTHINGFOUND_ERROR_MSG}</h2>
         }
+        return (
+            <MoviesCardList>
+                {moviesToRender.map((movie) => (
+                    <MoviesCard
+                        key={movie._id}
+                        movie={movie}
+                        onMovieDelete={handleDeleteMovie}
+                        isOnSavedList={`https://api.nomoreparties.co${movie.image.url}`}
+                    />
+                ))}
+            </MoviesCardList>
+        )
     }
 
     return (
@@ -140,8 +130,8 @@ function SavedMovies(props) {
                     onSubmit={filteredMovies}
                     setIsShortFilm={setIsShortFilm}
                     isShortFilm={isShortFilm}
-                    onSearchFormSubmit={setSearch}
-                    initialValue={search}
+                    onSearchFormSubmit={setSearcSavedMoviesh}
+                    initialValue={searchSavedMovies}
                 />
                 {isLoading
                     ? <Preloader />

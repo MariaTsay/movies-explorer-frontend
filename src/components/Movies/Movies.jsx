@@ -13,6 +13,7 @@ import { SERVER_ERROR_MSG, NOTHINGFOUND_ERROR_MSG } from "../../utils/constants"
 function Movies(props) {
     const { isLoading, error } = props;
     const [movies, setMovies] = useState([]);
+    const [filteredMoviesList, setFilteredMoviesList] = useState([]);
     const [savedMoviesList, setSavedMoviesList] = useState([]);
     const [isShortFilm, setIsShortFilm] = useState(false);
     const [search, setSearch] = useState(localStorage.getItem('search') ?? '');
@@ -58,6 +59,7 @@ function Movies(props) {
             const apiMovies = await moviesApi.getMovies();
             //console.log(apiMovies);
             setMovies(apiMovies);
+            localStorage.setItem("allMovies", JSON.stringify(apiMovies));
         } catch (err) {
             console.log(err);
         }
@@ -78,6 +80,9 @@ function Movies(props) {
     useEffect(() => {
         getMovies();
         getSavedMovies();
+
+        localStorage.getItem("allMovies", movies);
+        localStorage.getItem("filteredMovies", filteredMoviesList);
 
         const savedIsShort = localStorage.getItem("isShort");
 
@@ -112,6 +117,8 @@ function Movies(props) {
 
         localStorage.setItem("search", search);
         localStorage.setItem("isShort", String(isShortFilm));
+        localStorage.setItem("filteredMovies", JSON.stringify(filtered));
+        setFilteredMoviesList(filtered);
 
         return filtered
     }, [movies, isShortFilm, search]);
@@ -129,8 +136,8 @@ function Movies(props) {
 
     }, [filteredMovies, cardsToLoad, screenWidth, savedMoviesList]);
 
-    console.log(moviesToRender)
-    console.log(savedMoviesList)
+    //console.log(moviesToRender)
+    //console.log(savedMoviesList)
 
     // управление кнопкой "Еще"
     const handleMoreClick = useCallback(() => {

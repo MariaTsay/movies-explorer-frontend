@@ -14,7 +14,7 @@ import { checkAuth, signIn, signUp } from "../../utils/auth";
 import { mainApi } from "../../utils/MainApi";
 
 function App() {
-  const [currentUser, setCurrentUser] = useState({});
+  const [currentUser, setCurrentUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isInfoTooltipOpened, setIsInfoTooltipOpened] = useState(false);
   const [isInfoTooltipStatus, setIsInfoTooltipStatus] = useState('');
@@ -76,6 +76,11 @@ function App() {
   //выход пользователя со страницы
   const handleSignOut = () => {
     localStorage.removeItem('jwt');
+    localStorage.removeItem('allMovies');
+    localStorage.removeItem('filteredMovies');
+    localStorage.removeItem('isShort');
+    localStorage.removeItem('search');
+    localStorage.removeItem('allSavedMovies');
     setCurrentUser(null)
     setIsLoggedIn(false);
     navigate("/");
