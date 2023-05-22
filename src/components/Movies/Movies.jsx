@@ -15,7 +15,10 @@ function Movies(props) {
     const [movies, setMovies] = useState([]);
     const [filteredMoviesList, setFilteredMoviesList] = useState([]);
     const [savedMoviesList, setSavedMoviesList] = useState([]);
-    const [isShortFilm, setIsShortFilm] = useState(false);
+    const [isShortFilm, setIsShortFilm] = useState(() => {
+        const savedIsShort = localStorage.getItem("isShort");
+        return savedIsShort === "true"
+    });
     const [search, setSearch] = useState(localStorage.getItem('search') ?? '');
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
     const [cardsToLoad, setCardsToLoad] = useState(0);
@@ -90,12 +93,6 @@ function Movies(props) {
 
         localStorage.getItem("allMovies", movies);
         localStorage.getItem("filteredMovies", filteredMoviesList);
-
-        const savedIsShort = localStorage.getItem("isShort", isShortFilm);
-
-        if (savedIsShort) {
-            setIsShortFilm(savedIsShort === "true");
-        }
 
     }, [])
 

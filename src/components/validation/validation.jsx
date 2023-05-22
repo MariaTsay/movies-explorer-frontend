@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useRef, useMemo } from "react";
 
 //хук управления формой
 export function useForm() {
@@ -15,10 +15,11 @@ export function useForm() {
 }
 
 //хук управления формой и валидации формы
-export function useFormWithValidation() {
-  const [values, setValues] = React.useState({});
+export function useFormWithValidation(initialValue = {}) {
+  const [values, setValues] = React.useState(initialValue);
   const [errors, setErrors] = React.useState({});
   const [isValid, setIsValid] = React.useState(false);
+  const initialState = useRef(initialValue);
 
   const handleChange = (event) => {
     const target = event.target;
@@ -38,5 +39,13 @@ export function useFormWithValidation() {
     [setValues, setErrors, setIsValid]
   );
 
-  return { values, handleChange, errors, isValid, resetForm };
+  const isDirty = useMemo(() => {
+    const initial = initialState.current;
+
+    return Object.keys(values).some((key) => {
+      return !initial[key] || initial[key] !== values[key]
+    })
+  }, [values])
+
+  return { values, handleChange, errors, isValid, resetForm, isDirty };
 }

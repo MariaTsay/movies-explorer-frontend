@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
 import SavedMovies from '../SavedMovies/SavedMovies';
@@ -154,11 +154,17 @@ function App() {
               </ProtectedRoute>
             } />
             <Route path="/signup" element={
+              isLoggedIn 
+              ? <Navigate to="/"/> 
+              :
               <Register
                 onSubmit={handleSignUp}
               />
             } />
             <Route path="/signin" element={
+              isLoggedIn 
+              ? <Navigate to="/"/> 
+              :
               <Login
                 onSubmit={handleSignIn}
               />

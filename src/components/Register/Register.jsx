@@ -30,7 +30,7 @@ const Register = (props) => {
                 <Logo />
                 <WelcomeMessage>Добро пожаловать!</WelcomeMessage>
             </div>
-            <AuthorizationForm onSubmit={handleSubmit}>
+            <AuthorizationForm onSubmit={handleSubmit} isValid={isValid}>
                 <Input
                     label="Имя"
                     className="input__input"
