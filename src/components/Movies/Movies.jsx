@@ -131,9 +131,10 @@ function Movies(props) {
         return filtered
     }, [movies, isShortFilm, search]);
 
+    //хук сохранения состояния фильтра короткометражек
     useEffect(() => {
         localStorage.setItem('isShort', String(isShortFilm));
-      }, [isShortFilm]);
+    }, [isShortFilm]);
 
     // отображение карточек с фильмами в зависимости от разрешения
     const moviesToRender = useMemo(() => {
