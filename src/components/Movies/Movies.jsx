@@ -11,7 +11,7 @@ import { mainApi } from "../../utils/MainApi";
 import { SERVER_ERROR_MSG, NOTHINGFOUND_ERROR_MSG } from "../../utils/constants";
 
 function Movies(props) {
-    const { isLoading, error } = props;
+    const { error } = props;
     const [movies, setMovies] = useState([]);
     const [filteredMoviesList, setFilteredMoviesList] = useState([]);
     const [savedMoviesList, setSavedMoviesList] = useState([]);
@@ -19,6 +19,7 @@ function Movies(props) {
     const [search, setSearch] = useState(localStorage.getItem('search') ?? '');
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
     const [cardsToLoad, setCardsToLoad] = useState(0);
+    const [isLoading, setIsLoading] = useState(false);
 
     //добавление фильма в сохраненные, управление кнопкой лайка
     const handleAddMovieToSaved = async (movie) => {
@@ -55,6 +56,7 @@ function Movies(props) {
 
     //получение фильмов с сервера beatfilm-movies
     const getMovies = useCallback(async () => {
+        setIsLoading(true)
         try {
             const apiMovies = await moviesApi.getMovies();
             //console.log(apiMovies);
@@ -62,17 +64,22 @@ function Movies(props) {
             localStorage.setItem("allMovies", JSON.stringify(apiMovies));
         } catch (err) {
             console.log(err);
+        } finally {
+            setIsLoading(false)
         }
     }, [])
 
     //получение сохраненных фильмов с сервера
     const getSavedMovies = useCallback(async () => {
+        setIsLoading(true)
         try {
             const apiSavedMovies = await mainApi.getSavedMovies();
             console.log(apiSavedMovies.data);
             setSavedMoviesList(apiSavedMovies.data);
         } catch (err) {
             console.log(err);
+        } finally {
+            setIsLoading(false)
         }
     }, [])
 
@@ -84,11 +91,12 @@ function Movies(props) {
         localStorage.getItem("allMovies", movies);
         localStorage.getItem("filteredMovies", filteredMoviesList);
 
-        const savedIsShort = localStorage.getItem("isShort");
+        const savedIsShort = localStorage.getItem("isShort", isShortFilm);
 
         if (savedIsShort) {
             setIsShortFilm(savedIsShort === "true");
         }
+
     }, [])
 
     // хук изменения ширины экрана
@@ -122,6 +130,10 @@ function Movies(props) {
 
         return filtered
     }, [movies, isShortFilm, search]);
+
+    useEffect(() => {
+        localStorage.setItem('isShort', String(isShortFilm));
+      }, [isShortFilm]);
 
     // отображение карточек с фильмами в зависимости от разрешения
     const moviesToRender = useMemo(() => {

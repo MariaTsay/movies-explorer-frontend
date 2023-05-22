@@ -10,15 +10,17 @@ import { SERVER_ERROR_MSG, NOTHINGFOUND_ERROR_MSG } from "../../utils/constants"
 import { mainApi } from "../../utils/MainApi";
 
 function SavedMovies(props) {
-    const { isLoading, error } = props;
+    const { error } = props;
     const [savedMoviesList, setSavedMoviesList] = useState([]);
     const [isShortFilm, setIsShortFilm] = useState(false);
-    const [searchSavedMovies, setSearcSavedMoviesh] = useState(localStorage.getItem('searchSavedMovies') ?? '');
+    const [searchSavedMovies, setSearcSavedMovies] = useState('')
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
     const [cardsToLoad, setCardsToLoad] = useState(0);
+    const [isLoading, setIsLoading] = useState(false);
 
     //получение сохраненных фильмов с сервера
     const getSavedMovies = useCallback(async () => {
+        setIsLoading(true);
         try {
             const apiSavedMovies = await mainApi.getSavedMovies();
             console.log(apiSavedMovies.data);
@@ -26,6 +28,8 @@ function SavedMovies(props) {
             localStorage.setItem("allSavedMovies", JSON.stringify(apiSavedMovies.data));
         } catch (err) {
             console.log(err);
+        } finally {
+            setIsLoading(false);
         }
     }, [])
 
@@ -71,9 +75,6 @@ function SavedMovies(props) {
             }
             return nameRU.includes(searchSavedMovies) || nameEN.includes(searchSavedMovies);
         })
-
-        localStorage.setItem("searchSavedMovies", searchSavedMovies);
-        localStorage.setItem("isShort", String(isShortFilm));
 
         return filtered
     }, [savedMoviesList, isShortFilm, searchSavedMovies]);
@@ -130,7 +131,7 @@ function SavedMovies(props) {
                     onSubmit={filteredMovies}
                     setIsShortFilm={setIsShortFilm}
                     isShortFilm={isShortFilm}
-                    onSearchFormSubmit={setSearcSavedMoviesh}
+                    onSearchFormSubmit={setSearcSavedMovies}
                     initialValue={searchSavedMovies}
                 />
                 {isLoading
