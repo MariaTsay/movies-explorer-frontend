@@ -7,7 +7,7 @@ import AuthorizationForm from "../AuthorizationForm/AuthorizationForm";
 import Input from "../Input/Input";
 import SubmitForm from "../SubmitForm/SubmitForm";
 import { useFormWithValidation } from "../validation/validation";
-import { regexEmail, regexName, } from "../../utils/constants";
+import { regexEmail, regexName } from "../../utils/constants";
 
 
 const Register = (props) => {
