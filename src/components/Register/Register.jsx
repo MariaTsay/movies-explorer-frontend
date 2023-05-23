@@ -7,8 +7,6 @@ import AuthorizationForm from "../AuthorizationForm/AuthorizationForm";
 import Input from "../Input/Input";
 import SubmitForm from "../SubmitForm/SubmitForm";
 import { useFormWithValidation } from "../validation/validation";
-import { regexEmail, regexName } from "../../utils/constants";
-
 
 const Register = (props) => {
     const { onSubmit } = props;
@@ -40,7 +38,7 @@ const Register = (props) => {
                     value={values.name || ''}
                     onChange={handleChange}
                     autoComplete="off"
-                    pattern={regexName}
+                    pattern="[a-zA-Z0-9-а-яА-Я\s]+$"
                     error={errors.name}
                     minLength="2"
                     maxLength="30"
@@ -54,7 +52,7 @@ const Register = (props) => {
                     value={values.email || ''}
                     onChange={handleChange}
                     autoComplete="off"
-                    pattern={regexEmail}
+                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
                     error={errors.email}
                 />
                 <Input
