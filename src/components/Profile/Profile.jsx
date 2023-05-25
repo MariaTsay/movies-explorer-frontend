@@ -8,24 +8,28 @@ import { useCallback } from "react";
 
 const Profile = (props) => {
     const { onUpdateUserData, onSignOut } = props;
-    const { values, handleChange, errors, isValid, isDirty } = useFormWithValidation();
+    const { values, handleChange, errors, isValid, resetForm } = useFormWithValidation();
     const currentUser = useContext(CurrentUserContext);
     const [isUpdatedUserData, setIsUpdatedUserData] = useState(false);
-
+   
     const handleSubmit = useCallback((e) => {
         e.preventDefault();
 
         onUpdateUserData({
-            name: values.name || currentUser.name,
-            email: values.email || currentUser.email
+            name: values.name,
+            email: values.email
         })
-    }, [values.name, currentUser.name, values.email, currentUser.email, onUpdateUserData])
+    }, [values.name, values.email, onUpdateUserData])
 
     useEffect(() => {
         values.name !== currentUser.name || values.email !== currentUser.email
             ? setIsUpdatedUserData(true)
             : setIsUpdatedUserData(false)
     }, [values.name, currentUser.name, values.email, currentUser.email])
+
+    useEffect(() => {
+        resetForm({ name: currentUser.name, email: currentUser.email }, {}, false)
+    }, [resetForm, currentUser])
 
     return (
         <div className="profile">
@@ -65,7 +69,7 @@ const Profile = (props) => {
                             <button
                                 className="profile__link"
                                 type="submit"
-                                disabled={!isUpdatedUserData || !isValid || !isDirty}
+                                disabled={!isUpdatedUserData || !isValid}
                             >Редактировать</button>
                         </li>
                         <li className="profile__option">

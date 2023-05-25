@@ -19,7 +19,6 @@ export function useFormWithValidation(initialValue = {}) {
   const [values, setValues] = React.useState(initialValue);
   const [errors, setErrors] = React.useState({});
   const [isValid, setIsValid] = React.useState(false);
-  const initialState = useRef(initialValue);
 
   const handleChange = (event) => {
     const target = event.target;
@@ -39,13 +38,5 @@ export function useFormWithValidation(initialValue = {}) {
     [setValues, setErrors, setIsValid]
   );
 
-  const isDirty = useMemo(() => {
-    const initial = initialState.current;
-
-    return Object.keys(values).some((key) => {
-      return !initial[key] || initial[key] !== values[key]
-    })
-  }, [values])
-
-  return { values, handleChange, errors, isValid, resetForm, isDirty };
+  return { values, handleChange, errors, isValid, resetForm };
 }
