@@ -59,7 +59,7 @@ function Movies(props) {
 
     //получение фильмов с сервера beatfilm-movies
     const getMovies = useCallback(async () => {
-        setIsLoading(true)
+        setIsLoading(true);
         try {
             const apiMovies = await moviesApi.getMovies();
             //console.log(apiMovies);
@@ -73,26 +73,27 @@ function Movies(props) {
     }, [])
 
     //получение сохраненных фильмов с сервера
-    const getSavedMovies = useCallback(async () => {
+    const getSavedMovies = async () => {
         setIsLoading(true)
         try {
             const apiSavedMovies = await mainApi.getSavedMovies();
-            console.log(apiSavedMovies.data);
+            //console.log(apiSavedMovies.data);
             setSavedMoviesList(apiSavedMovies.data);
+
         } catch (err) {
             console.log(err);
         } finally {
             setIsLoading(false)
         }
-    }, [])
+    }
 
     //хук загрузки фильмов на страницу
     useEffect(() => {
         getMovies();
         getSavedMovies();
 
-        localStorage.getItem("allMovies", movies);
-        localStorage.getItem("filteredMovies", filteredMoviesList);
+        //localStorage.getItem("allMovies", movies);
+        //localStorage.getItem("filteredMovies", filteredMoviesList);
 
     }, [])
 
@@ -104,6 +105,11 @@ function Movies(props) {
             window.removeEventListener('resize', handleResize);
         }
     }, [])
+
+    //хук сохранения состояния фильтра короткометражек
+    useEffect(() => {
+        localStorage.setItem('isShort', String(isShortFilm));
+    }, [isShortFilm]);
 
     // фильтр фильмов по ключевым словам и короткометражкам
     const filteredMovies = useMemo(() => {
@@ -127,11 +133,6 @@ function Movies(props) {
 
         return filtered
     }, [movies, isShortFilm, search]);
-
-    //хук сохранения состояния фильтра короткометражек
-    useEffect(() => {
-        localStorage.setItem('isShort', String(isShortFilm));
-    }, [isShortFilm]);
 
     // отображение карточек с фильмами в зависимости от разрешения
     const moviesToRender = useMemo(() => {
@@ -159,27 +160,6 @@ function Movies(props) {
 
     }, [screenWidth]);
 
-    const MoviesBlock = () => {
-        if (search) {
-            //console.log(search)
-            if (!moviesToRender.length) {
-                return <h2 className="movies-error-title">{NOTHINGFOUND_ERROR_MSG}</h2>
-            }
-            return (
-                <MoviesCardList>
-                    {moviesToRender.map((movie) => (
-                        <MoviesCard
-                            key={movie.id}
-                            movie={movie}
-                            onMovieLike={handleAddMovieToSaved}
-                            onMovieDelete={handleDeleteMovie}
-                        />
-                    ))}
-                </MoviesCardList>
-            )
-        }
-    }
-
     return (
         <>
             <Header />
@@ -196,7 +176,21 @@ function Movies(props) {
                     ? <Preloader />
                     : (
                         <>
-                            <MoviesBlock />
+                            {search && !moviesToRender.length && (<h2 className="movies-error-title">{NOTHINGFOUND_ERROR_MSG}</h2>)}
+                            
+                            {search && moviesToRender.length && (
+                                <MoviesCardList>
+                                {moviesToRender.map((movie) => (
+                                    <MoviesCard
+                                        key={movie.id}
+                                        movie={movie}
+                                        onMovieLike={handleAddMovieToSaved}
+                                        onMovieDelete={handleDeleteMovie}
+                                    />
+                                ))}
+                            </MoviesCardList>
+                            )}
+
                             {error && <h2 className="movies-error-title">{SERVER_ERROR_MSG}</h2>}
                         </>
                     )}

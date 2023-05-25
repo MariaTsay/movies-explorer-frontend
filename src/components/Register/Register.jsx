@@ -7,7 +7,6 @@ import AuthorizationForm from "../AuthorizationForm/AuthorizationForm";
 import Input from "../Input/Input";
 import SubmitForm from "../SubmitForm/SubmitForm";
 import { useFormWithValidation } from "../validation/validation";
-
 const Register = (props) => {
     const { onSubmit } = props;
     const { values, handleChange, errors, isValid } = useFormWithValidation();

@@ -11,10 +11,21 @@ export class MoviesApi {
     }
 
     async getMovies() {
-        const res = await fetch(`${this._baseUrl}`, {
-            method: 'GET',
-        })
-        return this._handleResponse(res);
+        if (!this.cachedMoives) {
+            const res = await fetch(`${this._baseUrl}`, {
+                method: 'GET',
+            })
+
+            const data = await this._handleResponse(res);
+
+            this.cachedMoives = data;
+        }
+       
+        return this.cachedMoives;
+    }
+
+    resetCache() {
+        this.cachedMoives = null;
     }
 }
 
