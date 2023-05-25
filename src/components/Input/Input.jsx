@@ -2,7 +2,7 @@ import React from "react";
 import "./Input.css";
 
 const Input = (props) => {
-    const { label, type, name, id, placeholder, value, onChange, error, minLength, maxLength, pattern } = props;
+    const { label, type, name, id, placeholder, value, onChange, error, minLength, maxLength, pattern, readOnly } = props;
 
     return (
         <section className="input">
@@ -21,6 +21,7 @@ const Input = (props) => {
                     minLength={minLength}
                     maxLength={maxLength}
                     pattern={pattern}
+                    readOnly={readOnly}
                 >
                 </input>
                 {error && <span className="input__error">{error}</span>}

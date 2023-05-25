@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import "./Navigation.css";
 
 function Navigation() {
-    const linkActiveClassName = (isActive) => {
+    const linkActiveClassName = ({isActive}) => {
         return `navigation__link ${isActive ? 'navigation__link_active' : ''}`
     }
 
