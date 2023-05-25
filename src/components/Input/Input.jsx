@@ -21,7 +21,6 @@ const Input = (props) => {
                     minLength={minLength}
                     maxLength={maxLength}
                     pattern={pattern}
-                    readOnly={readOnly}
                 >
                 </input>
                 {error && <span className="input__error">{error}</span>}
