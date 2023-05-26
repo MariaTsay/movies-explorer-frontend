@@ -92,10 +92,12 @@ function Movies(props) {
         getMovies();
         getSavedMovies();
 
-        //localStorage.getItem("allMovies", movies);
+        localStorage.getItem("allMovies", movies);
         //localStorage.getItem("filteredMovies", filteredMoviesList);
 
     }, [])
+
+    
 
     // хук изменения ширины экрана
     useEffect(() => {

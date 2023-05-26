@@ -2,7 +2,7 @@ import React from "react";
 import "./Input.css";
 
 const Input = (props) => {
-    const { label, type, name, id, placeholder, value, onChange, error, minLength, maxLength, pattern, readOnly } = props;
+    const { label, type, name, id, placeholder, value, onChange, error, minLength, maxLength, pattern } = props;
 
     return (
         <section className="input">
