@@ -30,14 +30,14 @@ export class MainApi {
             },
             body: JSON.stringify({
                 name: data.name,
-                about: data.about
+                email: data.email
             })
         })
         return this._handleResponse(res);
     }
 
     async getSavedMovies() {
-        const res = await fetch(`${this._baseUrl}/saved-movies`, {
+        const res = await fetch(`${this._baseUrl}/movies`, {
             method: 'GET',
             headers: {
                 authorization: `Bearer ${localStorage.getItem('jwt')}`,
@@ -47,14 +47,26 @@ export class MainApi {
         return this._handleResponse(res);
     }
 
-    async createMovie(data) {
+    async saveMovie(data) {
         const res = await fetch(`${this._baseUrl}/movies`, {
             method: 'POST',
             headers: {
                 authorization: `Bearer ${localStorage.getItem('jwt')}`,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify({
+                nameRU: data.nameRU || '',
+                nameEN: data.nameEN || '',
+                country: data.country || '',
+                director: data.director || '',
+                duration: data.duration || '',
+                year: data.year || '',
+                description: data.description || '',
+                image: `https://api.nomoreparties.co${data.image.url}` || '',
+                trailerLink: data.trailerLink || '',
+                thumbnail: `https://api.nomoreparties.co${data.image.formats.thumbnail.url}` || '',
+                movieId: data.id,
+            })
         })
         return this._handleResponse(res);
     }
@@ -70,27 +82,7 @@ export class MainApi {
         return this._handleResponse(res);
     }
 
-    async likeMovie(id) {
-        const res = await fetch(`${this._baseUrl}/movies/${id}/likes`, {
-            method: 'PUT',
-            headers: {
-                authorization: `Bearer ${localStorage.getItem('jwt')}`,
-                'Content-Type': 'application/json'
-            }
-        })
-        return this._handleResponse(res);
-    }
 
-    async dislikeMovie(id) {
-        const res = await fetch(`${this._baseUrl}/movies/${id}/likes`, {
-            method: 'DELETE',
-            headers: {
-                authorization: `Bearer ${localStorage.getItem('jwt')}`,
-                'Content-Type': 'application/json'
-            }
-        })
-        return this._handleResponse(res);
-    }
 }
 
 //создание экземпляра класса MainApi

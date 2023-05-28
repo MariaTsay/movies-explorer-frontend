@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback } from "react";
 import { Link } from "react-router-dom";
 import "./Login.css";
 import Logo from "../Logo/Logo";
@@ -6,28 +6,26 @@ import WelcomeMessage from "../WelcomeMessage/WelcomeMessage";
 import AuthorizationForm from "../AuthorizationForm/AuthorizationForm";
 import Input from "../Input/Input";
 import SubmitForm from "../SubmitForm/SubmitForm";
-import InfoTooltip from "../InfoTooltip/InfoTooltip";
+import { useFormWithValidation } from "../validation/validation";
 
 const Login = (props) => {
-    const { onSubmit, isInfoTooltipOpened, isInfoTooltipClosed, isInfoTooltipStatus } = props;
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const { onSubmit } = props;
+    const { values, handleChange, errors, isValid } = useFormWithValidation();
 
     const handleSubmit = useCallback((e) => {
         e.preventDefault();
-        const authForm = {
-            email,
-            password
-        }
 
-        onSubmit(authForm);
-    }, [email, password, onSubmit])
+        onSubmit({
+            email: values.email,
+            password: values.password
+        });
+    }, [values, onSubmit])
 
     return (
         <section className="login">
             <div className="login__welcome">
                 <Logo />
-                <WelcomeMessage title="Рады видеть!" />
+                <WelcomeMessage>Рады видеть!</WelcomeMessage>
             </div>
             <AuthorizationForm onSubmit={handleSubmit}>
                 <div className="authorization__login-container">
@@ -37,9 +35,10 @@ const Login = (props) => {
                         type="email"
                         name="email"
                         id="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        value={values.email || ''}
+                        onChange={handleChange}
                         autoComplete="off"
+                        error={errors.email}
                     />
                     <Input
                         label="Пароль"
@@ -47,24 +46,18 @@ const Login = (props) => {
                         type="password"
                         name="password"
                         id="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        value={values.password || ''}
+                        onChange={handleChange}
                         autoComplete="off"
-                        errorText="Что-то пошло не так..."
+                        error={errors.password}
                     />
                 </div>
-                <SubmitForm buttonText="Войти">
+                <SubmitForm buttonText="Войти" isValid={!isValid}>
                     <p className="submit-form__caption">Ещё не зарегистрированы?
                         <Link to="/signup" className="submit-form__span">Регистрация</Link>
                     </p>
                 </SubmitForm>
             </AuthorizationForm>
-            <InfoTooltip
-                isOpen={isInfoTooltipOpened}
-                onClose={isInfoTooltipClosed}
-                status={isInfoTooltipStatus}
-                text={isInfoTooltipStatus === 'success' ? 'Добро пожаловать!' : 'Что-то пошло не так! Попробуйте ещё раз.'}
-            />
         </section>
     )
 }

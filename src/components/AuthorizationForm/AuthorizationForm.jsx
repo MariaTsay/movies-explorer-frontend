@@ -2,11 +2,11 @@ import React from "react";
 import "./AuthorizationForm.css";
 
 const AuthorizationForm = (props) => {
-    const { handleSubmit, children } = props;
+    const { onSubmit, children } = props;
 
     return (
         <div className="authorization">
-            <form className="authorization__form" onSubmit={handleSubmit} >
+            <form className="authorization__form" onSubmit={onSubmit} >
                 {children}
             </form>
         </div>

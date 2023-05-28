@@ -1,20 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
 import "./FilterCheckbox.css";
 
 const FilterCheckbox = (props) => {
-    const {shortFilm} = props;
-    const [isFilterCheckboxOn, setIsFilterCheckboxOn] = useState(shortFilm);
+    const { value, onChange } = props;
 
     const handleFilterCheckbox = () => {
-        setIsFilterCheckboxOn(!isFilterCheckboxOn);
+        onChange(!value);
     }
 
     return (
         <div className="filter-checkbox">
             <div className={
-                isFilterCheckboxOn 
-                ? "filter-checkbox__tumbler-on"
-                : "filter-checkbox__tumbler-off"
+                value
+                    ? "filter-checkbox__tumbler-on"
+                    : "filter-checkbox__tumbler-off"
             } onClick={handleFilterCheckbox}></div>
         </div>
     );

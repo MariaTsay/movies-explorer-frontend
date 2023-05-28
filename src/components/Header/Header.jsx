@@ -11,7 +11,6 @@ import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 const Header = () => {
   const location = useLocation();
   const currentUser = useContext(CurrentUserContext);
-  console.log(currentUser);
 
   return (
     <header className={`header ${location.pathname !== "/" ? 'header_loggined' : ''}`}>

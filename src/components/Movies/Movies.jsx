@@ -1,219 +1,210 @@
-import React, { useState } from "react";
-import { useLocation } from 'react-router-dom';
+import React, { useMemo, useState, useEffect, useCallback } from "react";
 import "./Movies.css";
 import Header from '../Header/Header';
 import SearchForm from '../SearchForm/SearchForm';
-import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import MoviesCard from '../MoviesCard/MoviesCard';
+import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Footer from '../Footer/Footer';
-import movie1 from "../../images/movie1.png";
-import movie2 from "../../images/movie2.png";
-import movie3 from "../../images/movie3.png";
-import movie4 from "../../images/movie4.png";
-import movie5 from "../../images/movie5.png";
-import movie6 from "../../images/movie6.png";
-import movie7 from "../../images/movie7.png";
-import movie8 from "../../images/movie8.png";
-import movie9 from "../../images/movie9.png";
-import movie10 from "../../images/movie10.png";
-import movie11 from "../../images/movie11.png";
-import movie12 from "../../images/movie12.png";
+import Preloader from '../Preloader/Preloader';
+import { moviesApi } from "../../utils/MoviesApi";
+import { mainApi } from "../../utils/MainApi";
+import { SERVER_ERROR_MSG, NOTHINGFOUND_ERROR_MSG } from "../../utils/constants";
 
 function Movies(props) {
-    const { isLiked } = props;
-    const location = useLocation();
-    const [isLikedMovie, setIsLikedMovie] = useState(isLiked);
+    const { error } = props;
+    const [movies, setMovies] = useState([]);
+    const [filteredMoviesList, setFilteredMoviesList] = useState([]);
+    const [savedMoviesList, setSavedMoviesList] = useState([]);
+    const [isShortFilm, setIsShortFilm] = useState(() => {
+        const savedIsShort = localStorage.getItem("isShort");
+        return savedIsShort === "true"
+    });
+    const [search, setSearch] = useState(localStorage.getItem('search') ?? '');
+    const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+    const [cardsToLoad, setCardsToLoad] = useState(0);
+    const [isLoading, setIsLoading] = useState(false);
 
-    const handleLikes = () => {
-        setIsLikedMovie(!isLikedMovie);
+    //добавление фильма в сохраненные, управление кнопкой лайка
+    const handleAddMovieToSaved = async (movie) => {
+        try {
+            if (!movie.isLiked) {
+                const newMovie = await mainApi.saveMovie(movie);
+                //console.log(newMovie);
+                setSavedMoviesList([newMovie, ...savedMoviesList]);
+            } else {
+                await handleDeleteMovie(movie)
+            }
+
+        } catch (err) {
+            console.log(err);
+        }
     }
+
+    //удаление фильма из сохраненных
+    const handleDeleteMovie = async (movie) => {
+        try {
+            const movieToDelete = savedMoviesList.find((m) => m.movieId === movie.id)
+            await mainApi.deleteMovie(movieToDelete._id);
+            //console.log(movie);
+            setSavedMoviesList((state) => state.filter((m) => m.movieId === movie.id ? '' : m.movieId))
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    //управление шириной экрана
+    const handleResize = useCallback(() => {
+        setScreenWidth(window.innerWidth);
+    }, [])
+
+    //получение фильмов с сервера beatfilm-movies
+    const getMovies = useCallback(async () => {
+        setIsLoading(true);
+        try {
+            const apiMovies = await moviesApi.getMovies();
+            //console.log(apiMovies);
+            setMovies(apiMovies);
+            localStorage.setItem("allMovies", JSON.stringify(apiMovies));
+        } catch (err) {
+            console.log(err);
+        } finally {
+            setIsLoading(false)
+        }
+    }, [])
+
+    //получение сохраненных фильмов с сервера
+    const getSavedMovies = async () => {
+        setIsLoading(true)
+        try {
+            const apiSavedMovies = await mainApi.getSavedMovies();
+            //console.log(apiSavedMovies.data);
+            setSavedMoviesList(apiSavedMovies.data);
+
+        } catch (err) {
+            console.log(err);
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
+    //хук загрузки фильмов на страницу
+    useEffect(() => {
+        getMovies();
+        getSavedMovies();
+
+        localStorage.getItem("allMovies", movies);
+        //localStorage.getItem("filteredMovies", filteredMoviesList);
+
+    }, [])
+
+    
+
+    // хук изменения ширины экрана
+    useEffect(() => {
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        }
+    }, [])
+
+    //хук сохранения состояния фильтра короткометражек
+    useEffect(() => {
+        localStorage.setItem('isShort', String(isShortFilm));
+    }, [isShortFilm]);
+
+    // фильтр фильмов по ключевым словам и короткометражкам
+    const filteredMovies = useMemo(() => {
+        if (!search) {
+            return [];
+        }
+
+        const filtered = movies.filter((movie) => {
+            const nameRU = movie.nameRU.toLowerCase();
+            const nameEN = movie.nameEN.toLowerCase();
+            if (isShortFilm && movie.duration > 40) {
+                return false;
+            }
+            return nameRU.includes(search) || nameEN.includes(search);
+        })
+
+        localStorage.setItem("search", search);
+        localStorage.setItem("isShort", String(isShortFilm));
+        localStorage.setItem("filteredMovies", JSON.stringify(filtered));
+        setFilteredMoviesList(filtered);
+
+        return filtered
+    }, [movies, isShortFilm, search]);
+
+    // отображение карточек с фильмами в зависимости от разрешения
+    const moviesToRender = useMemo(() => {
+        const countToRender = screenWidth < 768 ? 5 : screenWidth < 1280 ? 8 : 12;
+
+        return filteredMovies
+            .slice(0, countToRender + cardsToLoad)
+            .map((movie) => ({
+                ...movie,
+                isLiked: savedMoviesList.some((m) => m.movieId === movie.id)
+            }));
+
+    }, [filteredMovies, cardsToLoad, screenWidth, savedMoviesList]);
+
+    //console.log(moviesToRender)
+    //console.log(savedMoviesList)
+
+    // управление кнопкой "Еще"
+    const handleMoreClick = useCallback(() => {
+        if (screenWidth < 1280) {
+            setCardsToLoad((prev) => prev + 2);
+        } else {
+            setCardsToLoad((prev) => prev + 3);
+        }
+
+    }, [screenWidth]);
 
     return (
         <>
             <Header />
             <main>
-                <SearchForm />
-                <MoviesCardList>
-                    <MoviesCard>
-                        <div className="movies-card__wrap">
-                            <h3 className="movies-card__title">33 слова о дизайне</h3>
-                            {location.pathname === '/movies' ?
-                                <button
-                                    className={`movies-card__like ${isLikedMovie ? 'movies-card__like_active' : ''}`} type="button" onClick={handleLikes}></button>
-                                :
-                                <button className="movies-card__delete" type="button"></button>}
-                        </div>
-                        <label className="movies-card__duration">1ч 47м</label>
-                        <img className="movies-card__cover" src={movie1} alt="обложка фильма" />
-                    </MoviesCard>
-                    <MoviesCard>
-                        <div className="movies-card__wrap">
-                            <h3 className="movies-card__title">33 слова о дизайне</h3>
-                            {location.pathname === '/movies' ?
-                                <button
-                                    className={isLikedMovie
-                                        ? "movies-card__like movies-card__like_active"
-                                        : "movies-card__like"
-                                    } type="button" onClick={handleLikes}></button>
-                                :
-                                <button className="movies-card__delete" type="button"></button>}
-                        </div>
-                        <label className="movies-card__duration">1ч 47м</label>
-                        <img className="movies-card__cover" src={movie2} alt="обложка фильма" />
-                    </MoviesCard>
-                    <MoviesCard>
-                        <div className="movies-card__wrap">
-                            <h3 className="movies-card__title">33 слова о дизайне</h3>
-                            {location.pathname === '/movies' ?
-                                <button
-                                    className={isLikedMovie
-                                        ? "movies-card__like movies-card__like_active"
-                                        : "movies-card__like"
-                                    } type="button" onClick={handleLikes}></button>
-                                :
-                                <button className="movies-card__delete" type="button"></button>}
-                        </div>
-                        <label className="movies-card__duration">1ч 47м</label>
-                        <img className="movies-card__cover" src={movie3} alt="обложка фильма" />
-                    </MoviesCard>
-                    <MoviesCard>
-                        <div className="movies-card__wrap">
-                            <h3 className="movies-card__title">33 слова о дизайне</h3>
-                            {location.pathname === '/movies' ?
-                                <button
-                                    className={isLikedMovie
-                                        ? "movies-card__like movies-card__like_active"
-                                        : "movies-card__like"
-                                    } type="button" onClick={handleLikes}></button>
-                                :
-                                <button className="movies-card__delete" type="button"></button>}
-                        </div>
-                        <label className="movies-card__duration">1ч 47м</label>
-                        <img className="movies-card__cover" src={movie4} alt="обложка фильма" />
-                    </MoviesCard>
-                    <MoviesCard>
-                        <div className="movies-card__wrap">
-                            <h3 className="movies-card__title">33 слова о дизайне</h3>
-                            {location.pathname === '/movies' ?
-                                <button
-                                    className={isLikedMovie
-                                        ? "movies-card__like movies-card__like_active"
-                                        : "movies-card__like"
-                                    } type="button" onClick={handleLikes}></button>
-                                :
-                                <button className="movies-card__delete" type="button"></button>}
-                        </div>
-                        <label className="movies-card__duration">1ч 47м</label>
-                        <img className="movies-card__cover" src={movie5} alt="обложка фильма" />
-                    </MoviesCard>
-                    <MoviesCard>
-                        <div className="movies-card__wrap">
-                            <h3 className="movies-card__title">33 слова о дизайне</h3>
-                            {location.pathname === '/movies' ?
-                                <button
-                                    className={isLikedMovie
-                                        ? "movies-card__like movies-card__like_active"
-                                        : "movies-card__like"
-                                    } type="button" onClick={handleLikes}></button>
-                                :
-                                <button className="movies-card__delete" type="button"></button>}
-                        </div>
-                        <label className="movies-card__duration">1ч 47м</label>
-                        <img className="movies-card__cover" src={movie6} alt="обложка фильма" />
-                    </MoviesCard>
-                    <MoviesCard>
-                        <div className="movies-card__wrap">
-                            <h3 className="movies-card__title">33 слова о дизайне</h3>
-                            {location.pathname === '/movies' ?
-                                <button
-                                    className={isLikedMovie
-                                        ? "movies-card__like movies-card__like_active"
-                                        : "movies-card__like"
-                                    } type="button" onClick={handleLikes}></button>
-                                :
-                                <button className="movies-card__delete" type="button"></button>}
-                        </div>
-                        <label className="movies-card__duration">1ч 47м</label>
-                        <img className="movies-card__cover" src={movie7} alt="обложка фильма" />
-                    </MoviesCard>
-                    <MoviesCard>
-                        <div className="movies-card__wrap">
-                            <h3 className="movies-card__title">33 слова о дизайне</h3>
-                            {location.pathname === '/movies' ?
-                                <button
-                                    className={isLikedMovie
-                                        ? "movies-card__like movies-card__like_active"
-                                        : "movies-card__like"
-                                    } type="button" onClick={handleLikes}></button>
-                                :
-                                <button className="movies-card__delete" type="button"></button>}
-                        </div>
-                        <label className="movies-card__duration">1ч 47м</label>
-                        <img className="movies-card__cover" src={movie8} alt="обложка фильма" />
-                    </MoviesCard>
-                    <MoviesCard>
-                        <div className="movies-card__wrap">
-                            <h3 className="movies-card__title">33 слова о дизайне</h3>
-                            {location.pathname === '/movies' ?
-                                <button
-                                    className={isLikedMovie
-                                        ? "movies-card__like movies-card__like_active"
-                                        : "movies-card__like"
-                                    } type="button" onClick={handleLikes}></button>
-                                :
-                                <button className="movies-card__delete" type="button"></button>}
-                        </div>
-                        <label className="movies-card__duration">1ч 47м</label>
-                        <img className="movies-card__cover" src={movie9} alt="обложка фильма" />
-                    </MoviesCard>
-                    <MoviesCard>
-                        <div className="movies-card__wrap">
-                            <h3 className="movies-card__title">33 слова о дизайне</h3>
-                            {location.pathname === '/movies' ?
-                                <button
-                                    className={isLikedMovie
-                                        ? "movies-card__like movies-card__like_active"
-                                        : "movies-card__like"
-                                    } type="button" onClick={handleLikes}></button>
-                                :
-                                <button className="movies-card__delete" type="button"></button>}
-                        </div>
-                        <label className="movies-card__duration">1ч 47м</label>
-                        <img className="movies-card__cover" src={movie10} alt="обложка фильма" />
-                    </MoviesCard>
-                    <MoviesCard>
-                        <div className="movies-card__wrap">
-                            <h3 className="movies-card__title">33 слова о дизайне</h3>
-                            {location.pathname === '/movies' ?
-                                <button
-                                    className={isLikedMovie
-                                        ? "movies-card__like movies-card__like_active"
-                                        : "movies-card__like"
-                                    } type="button" onClick={handleLikes}></button>
-                                :
-                                <button className="movies-card__delete" type="button"></button>}
-                        </div>
-                        <label className="movies-card__duration">1ч 47м</label>
-                        <img className="movies-card__cover" src={movie11} alt="обложка фильма" />
-                    </MoviesCard>
-                    <MoviesCard>
-                        <div className="movies-card__wrap">
-                            <h3 className="movies-card__title">33 слова о дизайне</h3>
-                            {location.pathname === '/movies' ?
-                                <button
-                                    className={isLikedMovie
-                                        ? "movies-card__like movies-card__like_active"
-                                        : "movies-card__like"
-                                    } type="button" onClick={handleLikes}></button>
-                                :
-                                <button className="movies-card__delete" type="button"></button>}
-                        </div>
-                        <label className="movies-card__duration">1ч 47м</label>
-                        <img className="movies-card__cover" src={movie12} alt="обложка фильма" />
-                    </MoviesCard>
-                </MoviesCardList>
+                <SearchForm
+                    placeholder="Фильм"
+                    onSubmit={filteredMovies}
+                    setIsShortFilm={setIsShortFilm}
+                    isShortFilm={isShortFilm}
+                    onSearchFormSubmit={setSearch}
+                    initialValue={search}
+                />
+                {isLoading
+                    ? <Preloader />
+                    : (
+                        <>
+                            {search && !moviesToRender.length && (<h2 className="movies-error-title">{NOTHINGFOUND_ERROR_MSG}</h2>)}
+                            
+                            {search && moviesToRender.length && (
+                                <MoviesCardList>
+                                {moviesToRender.map((movie) => (
+                                    <MoviesCard
+                                        key={movie.id}
+                                        movie={movie}
+                                        onMovieLike={handleAddMovieToSaved}
+                                        onMovieDelete={handleDeleteMovie}
+                                    />
+                                ))}
+                            </MoviesCardList>
+                            )}
+
+                            {error && <h2 className="movies-error-title">{SERVER_ERROR_MSG}</h2>}
+                        </>
+                    )}
+
                 <div className="movies-more-wrap">
-                    <button className="movies-more-btn" type="button">Еще</button>
+                    {filteredMovies > moviesToRender && (
+                        <button
+                            className="movies-more-btn"
+                            type="button"
+                            onClick={handleMoreClick}
+                        >Еще</button>
+                    )}
                 </div>
             </main>
             <Footer />

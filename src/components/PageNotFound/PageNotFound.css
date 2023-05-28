@@ -31,6 +31,8 @@
     line-height: 15px;
     text-decoration: none;
     color: #000000;
+    border: none;
+    background: transparent;
 }
 
 .pagenotfound_link:hover {

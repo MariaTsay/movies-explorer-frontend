@@ -23,9 +23,14 @@
     box-sizing: border-box;
 }
 
-.submit-form__btn:hover {
+.submit-form__btn:not(:disabled):hover {
     cursor: pointer;
     opacity: 0.8;
+}
+
+.submit-form__btn:disabled {
+    cursor: pointer;
+    background: grey;
 }
 
 .submit-form__caption {

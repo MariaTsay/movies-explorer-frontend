@@ -44,7 +44,8 @@
     height: 20px;
     background-image: url(../../images/popup__close-btn.svg);
     background-repeat: no-repeat;
-    top: -32px;
+    background-size: 20px 20px;
+    top: -30px;
     right: 0;
     cursor: pointer;
     border: 0;
@@ -102,8 +103,6 @@
         background-size: 32px 32px;
         width: 32px;
         height: 32px;
-        top: -40px;
-        right: -40px;
     }
 
     .popup__form {

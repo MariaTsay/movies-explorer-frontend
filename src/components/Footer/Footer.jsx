@@ -4,7 +4,7 @@ import "./Footer.css";
 const Footer = () => {
     const fullYear = new Date().getFullYear();
     return (
-        <section className="footer">
+        <footer className="footer">
             <div className="footer__container">
                 <h3 className="footer__subtitle">Учебный проект Яндекс.Практикум х BeatFilm.</h3>
                 <div className="footer__wrap">
@@ -15,7 +15,7 @@ const Footer = () => {
                     <p className='footer__copyright'>&copy; {fullYear}</p>
                 </div>
             </div>
-        </section>
+        </footer>
     );
 
 }
